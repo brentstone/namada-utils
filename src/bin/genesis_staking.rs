@@ -10,8 +10,8 @@ use namada_sdk::{
 use namada_token::Dec;
 use namada_tools::{
     build_ctx, get_addresses, get_backer_balance, get_bonds_to_top_validators, get_core_balance,
-    get_future_alloc_balance, get_genesis_accounts, get_public_alloc_balance, get_rd_balance,
-    load_wallet, Record,
+    get_future_alloc_balance, get_genesis_accounts, get_pg_validator_balance,
+    get_public_alloc_balance, get_rd_balance, load_wallet, Record,
 };
 
 #[tokio::main]
@@ -302,20 +302,16 @@ async fn main() {
         rem_frac.checked_mul(Dec::from_str("100").unwrap()).unwrap()
     );
 
-    println!("\n---------- Sanity checks --------------------------\n");
-    println!(
-        "Missing genesis balance: {} ---> should be 205 NAM for the validator fees before Phase 5",
-        token::Amount::native_whole(1_000_000_000)
-            .checked_sub(get_backer_balance())
-            .unwrap()
-            .checked_sub(get_core_balance())
-            .unwrap()
-            .checked_sub(get_rd_balance())
-            .unwrap()
-            .checked_sub(get_future_alloc_balance())
-            .unwrap()
-            .checked_sub(get_public_alloc_balance())
-            .unwrap()
-            .to_string_native()
-    );
+    let rem_tokens = token::Amount::native_whole(1_000_000_000)
+        .checked_sub(get_backer_balance())
+        .unwrap()
+        .checked_sub(get_core_balance())
+        .unwrap()
+        .checked_sub(get_rd_balance())
+        .unwrap()
+        .checked_sub(get_future_alloc_balance())
+        .unwrap()
+        .checked_sub(get_public_alloc_balance())
+        .unwrap();
+    assert_eq!(rem_tokens, get_pg_validator_balance());
 }

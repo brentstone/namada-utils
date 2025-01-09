@@ -41,6 +41,10 @@ pub fn get_public_alloc_balance() -> token::Amount {
     token::Amount::from(161108277298514)
 }
 
+pub fn get_pg_validator_balance() -> token::Amount {
+    token::Amount::native_whole(205)
+}
+
 pub async fn build_ctx() -> NamadaImpl<HttpClient, FsWalletUtils, FsShieldedUtils, NullIo> {
     let rpc_url = std::env::var(RPC_ENV_VAR).expect("RPC_NAMADA_UTILS env var not set");
     let url = Url::from_str(&rpc_url).expect("Invalid RPC address");
@@ -150,4 +154,26 @@ pub fn get_bonds_to_top_validators(
         }
     }
     bonds_to_top_validators
+}
+
+// Write some tests
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_genesis_balance() {
+        let sum = get_backer_balance()
+            .checked_add(get_rd_balance())
+            .unwrap()
+            .checked_add(get_core_balance())
+            .unwrap()
+            .checked_add(get_future_alloc_balance())
+            .unwrap()
+            .checked_add(get_public_alloc_balance())
+            .unwrap()
+            .checked_add(get_pg_validator_balance())
+            .unwrap();
+        assert_eq!(sum, token::Amount::native_whole(1_000_000_000));
+    }
 }
