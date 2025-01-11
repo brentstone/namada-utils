@@ -29,7 +29,7 @@ async fn main() {
     let total_stake = rpc::get_total_staked_tokens(&sdk.client, current_epoch)
         .await
         .unwrap();
-    println!("Total stake: {}", total_stake.to_string_native());
+    println!("Total stake: {} NAM", total_stake.to_string_native());
     let total_staked_dec = Dec::try_from(total_stake).unwrap();
 
     println!("\n---------- Backers --------------------------\n");
@@ -300,6 +300,18 @@ async fn main() {
     println!(
         "\nAssumed public allocations fraction of total stake: {}%",
         rem_frac.checked_mul(Dec::from_str("100").unwrap()).unwrap()
+    );
+
+    let frac_pub_staked = rem_frac
+        .checked_mul(total_staked_dec)
+        .unwrap()
+        .checked_div(Dec::try_from(get_public_alloc_balance()).unwrap())
+        .unwrap();
+    println!(
+        "Fraction of public allocations staked: {}%",
+        frac_pub_staked
+            .checked_mul(Dec::from_str("100").unwrap())
+            .unwrap()
     );
 
     let rem_tokens = token::Amount::native_whole(1_000_000_000)
