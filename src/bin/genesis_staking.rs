@@ -101,7 +101,7 @@ async fn main() {
     let backer_balance_dec = Dec::try_from(get_backer_balance()).unwrap();
     let backer_frac = backer_staked_dec.checked_div(total_staked_dec).unwrap();
     println!(
-        "Genesis balance: {}\n",
+        "Genesis balance: {} NAM\n",
         get_backer_balance().to_string_native()
     );
     println!(
@@ -169,7 +169,7 @@ async fn main() {
     let core_balance_dec = Dec::try_from(get_core_balance()).unwrap();
     let core_frac = core_staked_dec.checked_div(total_staked_dec).unwrap();
     println!(
-        "Genesis balance: {}\n",
+        "Genesis balance: {} NAM\n",
         get_core_balance().to_string_native()
     );
     println!(
@@ -231,7 +231,10 @@ async fn main() {
     let rd_staked_dec = Dec::try_from(rd_stake).unwrap();
     let rd_balance_dec = Dec::try_from(get_rd_balance()).unwrap();
     let rd_frac = rd_staked_dec.checked_div(total_staked_dec).unwrap();
-    println!("Genesis balance: {}", get_rd_balance().to_string_native());
+    println!(
+        "Genesis balance: {} NAM",
+        get_rd_balance().to_string_native()
+    );
     for (name, balance) in gen_balances.iter() {
         println!("  --> {}: {}", name, balance.to_string_native(),);
     }
@@ -264,24 +267,39 @@ async fn main() {
 
     println!("\n---------- Future allocations --------------------------\n");
     let mut future_alloc_stake = token::Amount::zero();
-    for delegator in get_addresses("./config/future_allocations.txt") {
+    let mut gen_balances = HashMap::<String, token::Amount>::new();
+    for Record {
+        address,
+        amount,
+        category: _,
+        name,
+    } in get_genesis_accounts("./config/public_allocations_future.json")
+    {
+        let delegator = Address::from_str(&address).unwrap();
         let bonds =
             enriched_bonds_and_unbonds(&sdk.client, current_epoch, &Some(delegator.clone()), &None)
                 .await
                 .unwrap();
         let bonded = bonds.bonds_total_active().unwrap();
         future_alloc_stake = future_alloc_stake.checked_add(bonded).unwrap();
+
+        let a = gen_balances.entry(name.clone()).or_default();
+        *a = a.checked_add(token::Amount::from(amount)).unwrap();
     }
+
     let future_alloc_stake_dec = Dec::try_from(future_alloc_stake).unwrap();
     let future_alloc_frac = future_alloc_stake_dec
         .checked_div(total_staked_dec)
         .unwrap();
     println!(
-        "Genesis balance: {}\n",
+        "Genesis balance: {} NAM",
         get_future_alloc_balance().to_string_native()
     );
+    for (name, balance) in gen_balances.iter() {
+        println!("  --> {}: {}", name, balance.to_string_native());
+    }
     println!(
-        "Future allocations fraction of total stake: {}%",
+        "\nFuture allocations fraction of total stake: {}%",
         future_alloc_frac
             .checked_mul(Dec::from_str("100").unwrap())
             .unwrap()
@@ -330,4 +348,5 @@ async fn main() {
         .checked_sub(get_public_alloc_balance())
         .unwrap();
     assert_eq!(rem_tokens, get_pg_validator_balance());
+    println!();
 }
