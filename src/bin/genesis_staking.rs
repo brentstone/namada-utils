@@ -52,10 +52,14 @@ async fn main() {
     let frac_of_validator =
         |val: &str, bonds: &HashMap<String, token::Amount>, tot_stake: token::Amount| -> Dec {
             if let Some(a) = bonds.get(val) {
-                Dec::try_from(*a)
-                    .unwrap()
-                    .checked_div(Dec::try_from(tot_stake).unwrap())
-                    .unwrap()
+                if tot_stake > token::Amount::zero() {
+                    Dec::try_from(*a)
+                        .unwrap()
+                        .checked_div(Dec::try_from(tot_stake).unwrap())
+                        .unwrap()
+                } else {
+                    Dec::zero()
+                }
             } else {
                 Dec::zero()
             }
