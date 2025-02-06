@@ -1,9 +1,23 @@
 use std::str::FromStr;
 
 use namada_proof_of_stake::rewards::PosRewardsRates;
-use namada_sdk::{rpc, state::LastBlock, Namada};
+use namada_sdk::{rpc, state::LastBlock, time::DateTimeUtc, Namada};
 use namada_token::Dec;
 use namada_tools::{build_ctx, load_wallet};
+
+fn convert_to_hours(seconds: u64) -> String {
+    let hours = seconds / 3600;
+    let minutes = (seconds - 3600 * hours) / 60;
+    let seconds_unit = seconds - 3600 * hours - 60 * minutes;
+
+    if hours > 0 {
+        format!("{}h-{}m-{}s", hours, minutes, seconds_unit)
+    } else if minutes > 0 {
+        format!("{}m-{}s", minutes, seconds_unit)
+    } else {
+        format!("{}s", seconds_unit)
+    }
+}
 
 #[tokio::main]
 async fn main() {
@@ -28,9 +42,43 @@ async fn main() {
         .expect("Query epoch error");
     println!("Current epoch: {}\n", current_epoch);
 
-    let (_first_height_current_epoch, _epoch_duration) = rpc::query_next_epoch_info(&sdk.client)
+    let (first_height_current_epoch, epoch_duration) = rpc::query_next_epoch_info(&sdk.client)
         .await
         .expect("Query next epoch info error");
+
+    let first_header_current_epoch =
+        rpc::query_block_header(&sdk.client, first_height_current_epoch)
+            .await
+            .unwrap()
+            .unwrap();
+
+    let first_block_time = first_header_current_epoch.time;
+    let next_epoch_time = first_block_time + epoch_duration.min_duration;
+
+    #[allow(clippy::disallowed_methods)]
+    let current_time = DateTimeUtc::now();
+    let seconds_left = next_epoch_time.time_diff(current_time).0;
+    let time_remaining_str = convert_to_hours(seconds_left);
+
+    println!(
+        "First block height of epoch {current_epoch}: \
+         {first_height_current_epoch}.\n"
+    );
+    println!(
+        "Minimum number of blocks in an epoch: {}.",
+        epoch_duration.min_num_of_blocks
+    );
+    println!(
+        "Minimum amount of time for an epoch: {}.",
+        convert_to_hours(epoch_duration.min_duration.0)
+    );
+    println!(
+        "\nNext epoch ({}) begins in {} or at block height {}, whichever \
+         occurs later.\n",
+        current_epoch.next(),
+        time_remaining_str,
+        first_height_current_epoch.0 + epoch_duration.min_num_of_blocks + 2
+    );
 
     println!("\n---------- Staking rewards -------------\n");
     match rpc::get_staking_rewards_rate(&sdk.client).await {
