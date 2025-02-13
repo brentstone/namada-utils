@@ -19,6 +19,7 @@ use std::str::FromStr;
 use tendermint_rpc::{HttpClient, Url};
 
 pub const RPC_ENV_VAR: &str = "RPC_NAMADA_UTILS";
+pub const NAMADA_UTILS_DIR: &str = "NAMADA_UTILS_DIR";
 
 // Genesis balances
 pub fn get_backer_balance() -> token::Amount {
@@ -84,7 +85,9 @@ pub async fn load_wallet(sdk: &NamadaImpl<HttpClient, FsWalletUtils, FsShieldedU
     sdk.wallet().await.save().expect("Could not save wallet!");
 }
 
-pub fn get_addresses(path: &str) -> Vec<Address> {
+pub fn get_addresses(rel_path: &str) -> Vec<Address> {
+    let base_dir = std::env::var(NAMADA_UTILS_DIR).expect("NAMADA_UTILS_DIR env var not set");
+    let path = format!("{base_dir}/{rel_path}");
     let addresses = std::fs::read_to_string(path).expect("Could not read addresses file");
     addresses
         .lines()
