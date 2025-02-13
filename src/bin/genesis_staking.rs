@@ -65,7 +65,7 @@ async fn main() {
             }
         };
 
-    let sources = get_addresses("./config/backers.txt");
+    let sources = get_addresses("config/backers.txt");
     for delegator in sources {
         let bonds =
             enriched_bonds_and_unbonds(&sdk.client, current_epoch, &Some(delegator.clone()), &None)
@@ -151,7 +151,7 @@ async fn main() {
     let mut core_stake = token::Amount::zero();
     let mut core_team_bonds_to_top_vals = HashMap::<String, token::Amount>::new();
 
-    for delegator in get_addresses("./config/core_team.txt") {
+    for delegator in get_addresses("config/core_team.txt") {
         let bonds =
             enriched_bonds_and_unbonds(&sdk.client, current_epoch, &Some(delegator.clone()), &None)
                 .await

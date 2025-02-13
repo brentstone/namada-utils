@@ -17,7 +17,7 @@ async fn main() {
         .expect("Query epoch error");
     println!("Current epoch: {}\n", current_epoch);
 
-    let my_addresses = get_addresses("./config/my_addresses.txt");
+    let my_addresses = get_addresses("config/my_addresses.txt");
 
     let mut total_balance = token::Amount::zero();
     let mut total_bonded = token::Amount::zero();
