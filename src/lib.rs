@@ -103,7 +103,9 @@ pub struct Record {
     pub name: String,
 }
 
-pub fn get_genesis_accounts(path: &str) -> Vec<Record> {
+pub fn get_genesis_accounts(rel_path: &str) -> Vec<Record> {
+    let base_dir = std::env::var(NAMADA_UTILS_DIR).expect("NAMADA_UTILS_DIR env var not set");
+    let path = format!("{base_dir}/{rel_path}");
     let file = std::fs::File::open(path).expect("Could not open genesis accounts file");
     let reader = BufReader::new(file);
     from_reader(reader).expect("Could not parse genesis accounts file")
