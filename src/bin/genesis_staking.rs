@@ -211,7 +211,7 @@ async fn main() {
         amount,
         category: _,
         name,
-    } in get_genesis_accounts("./config/rd_ecosystem_dev.json")
+    } in get_genesis_accounts("config/rd_ecosystem_dev.json")
     {
         let delegator = Address::from_str(&address).unwrap();
         let bonds =
@@ -273,7 +273,7 @@ async fn main() {
         amount,
         category: _,
         name,
-    } in get_genesis_accounts("./config/public_allocations_future.json")
+    } in get_genesis_accounts("config/public_allocations_future.json")
     {
         let delegator = Address::from_str(&address).unwrap();
         let bonds =
