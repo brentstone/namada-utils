@@ -56,7 +56,7 @@ async fn main() {
             sources_rewards = sources_rewards.checked_add(rewards).unwrap();
         }
         println!(
-            "Unclaimed ewards: {} NAM",
+            "Unclaimed rewards: {} NAM",
             sources_rewards.to_string_native()
         );
 
