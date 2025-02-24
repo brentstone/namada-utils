@@ -45,7 +45,7 @@ async fn main() {
             _,
         ) in bonds.data
         {
-            let rewards = rpc::query_rewards(&sdk.client, &Some(addr.clone()), &validator)
+            let rewards = rpc::query_rewards(&sdk.client, &Some(addr.clone()), &validator, &None)
                 .await
                 .unwrap();
             // println!(

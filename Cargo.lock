@@ -849,6 +849,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "cosmos-sdk-proto"
+version = "0.26.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "462e1f6a8e005acc8835d32d60cbd7973ed65ea2a8d8473830e675f050956427"
+dependencies = [
+ "informalsystems-pbjson",
+ "prost",
+ "serde",
+ "tendermint-proto",
+]
+
+[[package]]
 name = "cpufeatures"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1062,6 +1074,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.92",
+ "unicode-xid",
 ]
 
 [[package]]
@@ -1358,7 +1371,7 @@ dependencies = [
  "serde_json",
  "sha3",
  "thiserror 1.0.69",
- "uint",
+ "uint 0.9.5",
 ]
 
 [[package]]
@@ -1369,9 +1382,9 @@ checksum = "c22d4b5885b6aa2fe5e8b9329fb8d232bf739e434e6b87347c63bdd00c120f60"
 dependencies = [
  "crunchy",
  "fixed-hash",
- "impl-codec",
+ "impl-codec 0.6.0",
  "impl-rlp",
- "impl-serde",
+ "impl-serde 0.4.0",
  "scale-info",
  "tiny-keccak",
 ]
@@ -1419,12 +1432,12 @@ checksum = "02d215cbf040552efcbe99a38372fe80ab9d00268e20012b79fcd0f073edd8ee"
 dependencies = [
  "ethbloom",
  "fixed-hash",
- "impl-codec",
+ "impl-codec 0.6.0",
  "impl-rlp",
- "impl-serde",
- "primitive-types",
+ "impl-serde 0.4.0",
+ "primitive-types 0.12.2",
  "scale-info",
- "uint",
+ "uint 0.9.5",
 ]
 
 [[package]]
@@ -2266,8 +2279,9 @@ dependencies = [
 
 [[package]]
 name = "ibc"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "50aebe83b772ecd2020ad1654b09abfb387f5ddc07db01ed23defb04a9a7fde8"
 dependencies = [
  "ibc-apps",
  "ibc-clients",
@@ -2279,8 +2293,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-app-nft-transfer"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "95bbdca1dab5e007633af6d9ee070a2f35749336239804c42ff7fad444c10b2e"
 dependencies = [
  "ibc-app-nft-transfer-types",
  "ibc-core",
@@ -2289,12 +2304,13 @@ dependencies = [
 
 [[package]]
 name = "ibc-app-nft-transfer-types"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e654dd72dc2df2dd1f232b0599331ff1519fc2c0d346f12e5e319a97c33b330c"
 dependencies = [
  "base64 0.22.1",
  "borsh",
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "http 1.2.0",
  "ibc-app-transfer-types",
@@ -2310,8 +2326,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-app-transfer"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "57cad93b5e1074c1f7b8dcea6099640b5a725a8a1dde957b00e89685eb2c0151"
 dependencies = [
  "ibc-app-transfer-types",
  "ibc-core",
@@ -2320,26 +2337,28 @@ dependencies = [
 
 [[package]]
 name = "ibc-app-transfer-types"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "364c7eb9dc122a279cafb5cd9eb1c459a1902a3c9a1e107f8d3037ca97ab4a5c"
 dependencies = [
  "borsh",
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "ibc-core",
  "ibc-proto",
  "parity-scale-codec",
- "primitive-types",
+ "primitive-types 0.13.1",
  "scale-info",
  "schemars",
  "serde",
- "uint",
+ "uint 0.10.0",
 ]
 
 [[package]]
 name = "ibc-apps"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bb5ecc814492ac9349b27d7f119f0b0f3b9f94ffd156df35eaf6adb53b7831f3"
 dependencies = [
  "ibc-app-nft-transfer",
  "ibc-app-transfer",
@@ -2347,10 +2366,11 @@ dependencies = [
 
 [[package]]
 name = "ibc-client-tendermint"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "11225e842c5e3bf0787a36cf10d16b954dafbef357533fa2a87c7ac1bb2739f7"
 dependencies = [
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "ibc-client-tendermint-types",
  "ibc-core-client",
  "ibc-core-commitment-types",
@@ -2364,8 +2384,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-client-tendermint-types"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "aa16efb7dc6d7b73d483e55553e6c69eeaf0b82384b464514c52fe813d3c55d2"
 dependencies = [
  "displaydoc",
  "ibc-core-client-types",
@@ -2381,8 +2402,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-client-wasm-types"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e897b268e2f496e4a66c068a6146576a8b5a8243c5d3f1ab157505a715f22dc8"
 dependencies = [
  "base64 0.22.1",
  "displaydoc",
@@ -2395,8 +2417,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-clients"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "464b3c5061092ea25298443d3554c405f78d31e4928060167a216bb8cdc02708"
 dependencies = [
  "ibc-client-tendermint",
  "ibc-client-wasm-types",
@@ -2404,8 +2427,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-core"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2f37c8c56ee649ba0ddf64268d4b8b35287937d4aaaf69877f922a4adc2eb29e"
 dependencies = [
  "ibc-core-channel",
  "ibc-core-client",
@@ -2420,8 +2444,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-channel"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "111523dd75048898dcf3806484b2615a97d186725f1df8fe2de2862c6849034e"
 dependencies = [
  "ibc-core-channel-types",
  "ibc-core-client",
@@ -2435,11 +2460,12 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-channel-types"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "681d986a6943683ef16fbaab8295125bf795ab4e15a1909eccb8574bb4567f10"
 dependencies = [
  "borsh",
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "ibc-core-client-types",
  "ibc-core-commitment-types",
@@ -2458,8 +2484,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-client"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e95616bda7fa163c1ed5e96aa2a5c902d07b31fddbcd756ebaca7a004bc078e8"
 dependencies = [
  "ibc-core-client-context",
  "ibc-core-client-types",
@@ -2471,10 +2498,11 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-client-context"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2540ce861ac8fe7ce6ff14de043d8a3e8e239875c058f0b5baa9fe9b0a31ac94"
 dependencies = [
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "ibc-core-client-types",
  "ibc-core-commitment-types",
@@ -2487,11 +2515,12 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-client-types"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6f741122f7504846a6099d41244687e5db3235b7ce5f651de8a552489c1f5c9a"
 dependencies = [
  "borsh",
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "ibc-core-commitment-types",
  "ibc-core-host-types",
@@ -2507,11 +2536,12 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-commitment-types"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4ba35d2bde395cff6ddbf550d604c3098903e661430588995b1e5f8db1f2e1d1"
 dependencies = [
  "borsh",
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "ibc-core-host-types",
  "ibc-primitives",
@@ -2526,8 +2556,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-connection"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "debe3ecdf3a0d59b011c963164974d6d924fb7e5580ce8262b1e64e2a0088cd7"
 dependencies = [
  "ibc-client-wasm-types",
  "ibc-core-client",
@@ -2535,16 +2566,17 @@ dependencies = [
  "ibc-core-handler-types",
  "ibc-core-host",
  "ibc-primitives",
- "prost 0.13.4",
+ "prost",
 ]
 
 [[package]]
 name = "ibc-core-connection-types"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f2eed5ea03d3900f89b3b498c7f2ff83ca50c2f4f76cebc339bfa5ecb2f0ffc1"
 dependencies = [
  "borsh",
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "ibc-core-client-types",
  "ibc-core-commitment-types",
@@ -2561,8 +2593,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-handler"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "26219873baa090be293308e45be9eb09a4ad5eb27b9cedbca3fa9552e90e6163"
 dependencies = [
  "ibc-core-channel",
  "ibc-core-client",
@@ -2576,11 +2609,12 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-handler-types"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "426cdb98d683cf8f65b1ebb7638fd4e8a35e1718aa143bcf895636ee34c68385"
 dependencies = [
  "borsh",
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "ibc-core-channel-types",
  "ibc-core-client-types",
@@ -2600,10 +2634,11 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-host"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2ff10f831f430b02462e71852bcbc947dde972762ee26dce1202f861003366f2"
 dependencies = [
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "ibc-core-channel-types",
  "ibc-core-client-context",
@@ -2618,10 +2653,11 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-host-cosmos"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d06697cc443a9ad99a6063e10ae08bf0aa78a72ba9e4e46fd6db8ee1c511b66f"
 dependencies = [
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "ibc-app-transfer-types",
  "ibc-client-tendermint",
@@ -2641,14 +2677,17 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-host-types"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5879fb43b0789f42919b7965a93f8a18a08eaa39bf624fbaf837d8673ef1ecdc"
 dependencies = [
+ "base64 0.22.1",
  "borsh",
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "ibc-primitives",
  "parity-scale-codec",
+ "prost",
  "scale-info",
  "schemars",
  "serde",
@@ -2656,10 +2695,11 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-router"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6d50640473900acca78039d01246bbfec827153eb7d7f294dc08dee58ca2be4f"
 dependencies = [
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "ibc-core-channel-types",
  "ibc-core-host-types",
@@ -2670,11 +2710,12 @@ dependencies = [
 
 [[package]]
 name = "ibc-core-router-types"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "61cdfb5f8f7986ac50941f556c16d46e81cdf3529b257be1ab3beca8281f953e"
 dependencies = [
  "borsh",
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "ibc-core-host-types",
  "ibc-primitives",
@@ -2689,8 +2730,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-derive"
-version = "0.8.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.10.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "27e93e76ce4da46027a59a5f2c3152e6d4adc4a9d541c782ff69b89e7fa2ccb8"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2699,32 +2741,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-middleware-module"
-version = "0.1.0"
-source = "git+https://github.com/heliaxdev/ibc-middleware?tag=module/v0.1.0#3d3b436f7c58000c7498d68e88c15a955433a619"
-dependencies = [
- "ibc-core-channel-types",
- "ibc-core-host-types",
- "ibc-core-router",
- "ibc-core-router-types",
- "ibc-primitives",
-]
-
-[[package]]
-name = "ibc-middleware-module"
-version = "0.1.0"
-source = "git+https://github.com/heliaxdev/ibc-middleware?tag=orm/v0.4.0#8d341de14ff5e2a637699796cffbf0fbbaee001f"
-dependencies = [
- "ibc-core-channel-types",
- "ibc-core-host-types",
- "ibc-core-router",
- "ibc-core-router-types",
- "ibc-primitives",
-]
-
-[[package]]
-name = "ibc-middleware-module"
-version = "0.1.0"
-source = "git+https://github.com/heliaxdev/ibc-middleware?tag=pfm/v0.9.0#3d3b436f7c58000c7498d68e88c15a955433a619"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "64aa34a2890898b88c6f1e0b505b7d092b569492885cdc145ac5e23e816cc308"
 dependencies = [
  "ibc-core-channel-types",
  "ibc-core-host-types",
@@ -2735,26 +2754,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-middleware-module-macros"
-version = "0.1.0"
-source = "git+https://github.com/heliaxdev/ibc-middleware?tag=module-macros/v0.1.0#3d3b436f7c58000c7498d68e88c15a955433a619"
-dependencies = [
- "proc-macro2",
- "quote",
-]
-
-[[package]]
-name = "ibc-middleware-module-macros"
-version = "0.1.0"
-source = "git+https://github.com/heliaxdev/ibc-middleware?tag=orm/v0.4.0#8d341de14ff5e2a637699796cffbf0fbbaee001f"
-dependencies = [
- "proc-macro2",
- "quote",
-]
-
-[[package]]
-name = "ibc-middleware-module-macros"
-version = "0.1.0"
-source = "git+https://github.com/heliaxdev/ibc-middleware?tag=pfm/v0.9.0#3d3b436f7c58000c7498d68e88c15a955433a619"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73055ad46ad031f010ac66ac185fd2e4cee456d5e0e8bec21ea6caf55de7d63a"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2762,16 +2764,17 @@ dependencies = [
 
 [[package]]
 name = "ibc-middleware-overflow-receive"
-version = "0.4.0"
-source = "git+https://github.com/heliaxdev/ibc-middleware?tag=orm/v0.4.0#8d341de14ff5e2a637699796cffbf0fbbaee001f"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b33fe36be073b32abe9b262134cc2a2fbbd689f9a532f6700533324ff279af8b"
 dependencies = [
  "ibc-app-transfer-types",
  "ibc-core-channel-types",
  "ibc-core-host-types",
  "ibc-core-router",
  "ibc-core-router-types",
- "ibc-middleware-module 0.1.0 (git+https://github.com/heliaxdev/ibc-middleware?tag=orm/v0.4.0)",
- "ibc-middleware-module-macros 0.1.0 (git+https://github.com/heliaxdev/ibc-middleware?tag=orm/v0.4.0)",
+ "ibc-middleware-module",
+ "ibc-middleware-module-macros",
  "ibc-primitives",
  "serde",
  "serde_json",
@@ -2779,8 +2782,9 @@ dependencies = [
 
 [[package]]
 name = "ibc-middleware-packet-forward"
-version = "0.9.0"
-source = "git+https://github.com/heliaxdev/ibc-middleware?tag=pfm/v0.9.0#3d3b436f7c58000c7498d68e88c15a955433a619"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9da9cb134fa631c50659f58fb6f5356c724709048107b976548daad8860e7361"
 dependencies = [
  "borsh",
  "dur",
@@ -2791,8 +2795,8 @@ dependencies = [
  "ibc-core-host-types",
  "ibc-core-router",
  "ibc-core-router-types",
- "ibc-middleware-module 0.1.0 (git+https://github.com/heliaxdev/ibc-middleware?tag=pfm/v0.9.0)",
- "ibc-middleware-module-macros 0.1.0 (git+https://github.com/heliaxdev/ibc-middleware?tag=pfm/v0.9.0)",
+ "ibc-middleware-module",
+ "ibc-middleware-module-macros",
  "ibc-primitives",
  "serde",
  "serde_json",
@@ -2800,37 +2804,35 @@ dependencies = [
 
 [[package]]
 name = "ibc-primitives"
-version = "0.54.0"
-source = "git+https://github.com/heliaxdev/cosmos-ibc-rs?rev=38489943c4e75206eaffeeeec6153c039c2499d1#38489943c4e75206eaffeeeec6153c039c2499d1"
+version = "0.57.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4ff3dab00855e9ab99fa7276814bd29b0350f2da70b3e9f67f1d86f4e269655b"
 dependencies = [
  "borsh",
- "derive_more 0.99.18",
+ "derive_more 1.0.0",
  "displaydoc",
  "ibc-proto",
  "parity-scale-codec",
- "prost 0.13.4",
+ "prost",
  "scale-info",
  "schemars",
  "serde",
- "tendermint",
  "time",
 ]
 
 [[package]]
 name = "ibc-proto"
-version = "0.47.1"
+version = "0.51.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c852d22b782d2d793f4a646f968de419be635e02bc8798d5d74a6e44eef27733"
+checksum = "9b70f517162e74e2d35875b8b94bf4d1e45f2c69ef3de452dc855944455d33ca"
 dependencies = [
  "base64 0.22.1",
- "borsh",
  "bytes",
+ "cosmos-sdk-proto",
  "flex-error",
  "ics23",
  "informalsystems-pbjson",
- "parity-scale-codec",
- "prost 0.13.4",
- "scale-info",
+ "prost",
  "schemars",
  "serde",
  "subtle-encoding",
@@ -2849,7 +2851,7 @@ dependencies = [
  "bytes",
  "hex",
  "informalsystems-pbjson",
- "prost 0.13.4",
+ "prost",
  "ripemd",
  "serde",
  "sha2 0.10.8",
@@ -3005,6 +3007,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "impl-codec"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b67aa010c1e3da95bf151bd8b4c059b2ed7e75387cdb969b4f8f2723a43f9941"
+dependencies = [
+ "parity-scale-codec",
+]
+
+[[package]]
 name = "impl-num-traits"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3012,7 +3023,7 @@ checksum = "951641f13f873bff03d4bf19ae8bec531935ac0ac2cc775f84d7edfdcfed3f17"
 dependencies = [
  "integer-sqrt",
  "num-traits",
- "uint",
+ "uint 0.9.5",
 ]
 
 [[package]]
@@ -3029,6 +3040,15 @@ name = "impl-serde"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ebc88fc67028ae3db0c853baa36269d398d5f45b6982f95549ff5def78c935cd"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "impl-serde"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4a143eada6a1ec4aefa5049037a26a6d597bfd64f8c026d07b77133e02b7dd0b"
 dependencies = [
  "serde",
 ]
@@ -3634,8 +3654,8 @@ dependencies = [
 
 [[package]]
 name = "namada_account"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "borsh",
  "namada_core",
@@ -3646,8 +3666,8 @@ dependencies = [
 
 [[package]]
 name = "namada_controller"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "namada_core",
  "smooth-operator",
@@ -3656,8 +3676,8 @@ dependencies = [
 
 [[package]]
 name = "namada_core"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "bech32 0.8.1",
  "borsh",
@@ -3681,8 +3701,8 @@ dependencies = [
  "num-traits",
  "num256",
  "num_enum",
- "primitive-types",
- "prost-types 0.13.4",
+ "primitive-types 0.13.1",
+ "prost-types",
  "rand",
  "rand_core",
  "rayon",
@@ -3697,7 +3717,7 @@ dependencies = [
  "tiny-keccak",
  "tokio",
  "tracing",
- "uint",
+ "uint 0.9.5",
  "usize-set",
  "wasmtimer",
  "zeroize",
@@ -3705,8 +3725,8 @@ dependencies = [
 
 [[package]]
 name = "namada_ethereum_bridge"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "borsh",
  "ethers",
@@ -3733,8 +3753,8 @@ dependencies = [
 
 [[package]]
 name = "namada_events"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "borsh",
  "namada_core",
@@ -3747,8 +3767,8 @@ dependencies = [
 
 [[package]]
 name = "namada_gas"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "borsh",
  "namada_core",
@@ -3760,8 +3780,8 @@ dependencies = [
 
 [[package]]
 name = "namada_governance"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "borsh",
  "itertools 0.12.1",
@@ -3783,16 +3803,16 @@ dependencies = [
 
 [[package]]
 name = "namada_ibc"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "borsh",
  "data-encoding",
  "dur",
  "ibc",
  "ibc-derive",
- "ibc-middleware-module 0.1.0 (git+https://github.com/heliaxdev/ibc-middleware?tag=module/v0.1.0)",
- "ibc-middleware-module-macros 0.1.0 (git+https://github.com/heliaxdev/ibc-middleware?tag=module-macros/v0.1.0)",
+ "ibc-middleware-module",
+ "ibc-middleware-module-macros",
  "ibc-middleware-overflow-receive",
  "ibc-middleware-packet-forward",
  "ics23",
@@ -3806,8 +3826,8 @@ dependencies = [
  "namada_systems",
  "namada_tx",
  "namada_vp",
- "primitive-types",
- "prost 0.13.4",
+ "primitive-types 0.13.1",
+ "prost",
  "serde",
  "serde_json",
  "sha2 0.9.9",
@@ -3818,8 +3838,8 @@ dependencies = [
 
 [[package]]
 name = "namada_io"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "async-trait",
  "kdam",
@@ -3831,8 +3851,8 @@ dependencies = [
 
 [[package]]
 name = "namada_macros"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "data-encoding",
  "proc-macro2",
@@ -3843,8 +3863,8 @@ dependencies = [
 
 [[package]]
 name = "namada_merkle_tree"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "borsh",
  "eyre",
@@ -3852,14 +3872,14 @@ dependencies = [
  "nam-sparse-merkle-tree",
  "namada_core",
  "namada_macros",
- "prost 0.13.4",
+ "prost",
  "thiserror 1.0.69",
 ]
 
 [[package]]
 name = "namada_parameters"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "namada_core",
  "namada_macros",
@@ -3873,8 +3893,8 @@ dependencies = [
 
 [[package]]
 name = "namada_proof_of_stake"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "borsh",
  "itertools 0.12.1",
@@ -3897,16 +3917,16 @@ dependencies = [
 
 [[package]]
 name = "namada_replay_protection"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "namada_core",
 ]
 
 [[package]]
 name = "namada_sdk"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "async-trait",
  "bech32 0.8.1",
@@ -3951,7 +3971,7 @@ dependencies = [
  "owo-colors",
  "paste",
  "patricia_tree",
- "prost 0.13.4",
+ "prost",
  "rand",
  "rand_core",
  "rayon",
@@ -3975,8 +3995,8 @@ dependencies = [
 
 [[package]]
 name = "namada_shielded_token"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "async-trait",
  "borsh",
@@ -4016,8 +4036,8 @@ dependencies = [
 
 [[package]]
 name = "namada_state"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "borsh",
  "clru",
@@ -4039,8 +4059,8 @@ dependencies = [
 
 [[package]]
 name = "namada_storage"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "borsh",
  "itertools 0.12.1",
@@ -4058,8 +4078,8 @@ dependencies = [
 
 [[package]]
 name = "namada_systems"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "namada_core",
  "namada_events",
@@ -4068,8 +4088,8 @@ dependencies = [
 
 [[package]]
 name = "namada_token"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "borsh",
  "namada_core",
@@ -4086,8 +4106,8 @@ dependencies = [
 
 [[package]]
 name = "namada_trans_token"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "konst",
  "namada_core",
@@ -4103,8 +4123,8 @@ dependencies = [
 
 [[package]]
 name = "namada_tx"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "ark-bls12-381",
  "bitflags 2.6.0",
@@ -4120,8 +4140,8 @@ dependencies = [
  "namada_macros",
  "num-derive 0.4.2",
  "num-traits",
- "prost 0.13.4",
- "prost-types 0.13.4",
+ "prost",
+ "prost-types",
  "rand_core",
  "serde",
  "serde_json",
@@ -4132,8 +4152,8 @@ dependencies = [
 
 [[package]]
 name = "namada_tx_env"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "namada_core",
  "namada_events",
@@ -4142,8 +4162,8 @@ dependencies = [
 
 [[package]]
 name = "namada_vm"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "borsh",
  "clru",
@@ -4164,8 +4184,8 @@ dependencies = [
 
 [[package]]
 name = "namada_vote_ext"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "borsh",
  "namada_core",
@@ -4176,8 +4196,8 @@ dependencies = [
 
 [[package]]
 name = "namada_vp"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "namada_core",
  "namada_events",
@@ -4192,8 +4212,8 @@ dependencies = [
 
 [[package]]
 name = "namada_vp_env"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "derivative",
  "masp_primitives",
@@ -4207,8 +4227,8 @@ dependencies = [
 
 [[package]]
 name = "namada_wallet"
-version = "0.47.0"
-source = "git+https://github.com/anoma/namada?tag=libs-v0.47.0#269272f7b4b9a067b6df390ffedc75162aded1ef"
+version = "0.47.1"
+source = "git+https://github.com/anoma/namada?tag=libs-v0.47.1#c934e9f35b1c0053d6db0ebbb4279e53c599e928"
 dependencies = [
  "bimap",
  "borsh",
@@ -4924,11 +4944,23 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0b34d9fd68ae0b74a41b21c03c2f62847aa0ffea044eee893b4c140b37e244e2"
 dependencies = [
  "fixed-hash",
- "impl-codec",
+ "impl-codec 0.6.0",
  "impl-rlp",
- "impl-serde",
+ "impl-serde 0.4.0",
  "scale-info",
- "uint",
+ "uint 0.9.5",
+]
+
+[[package]]
+name = "primitive-types"
+version = "0.13.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d15600a7d856470b7d278b3fe0e311fe28c2526348549f8ef2ff7db3299c87f5"
+dependencies = [
+ "fixed-hash",
+ "impl-codec 0.7.0",
+ "impl-serde 0.5.0",
+ "uint 0.10.0",
 ]
 
 [[package]]
@@ -4967,56 +4999,32 @@ dependencies = [
 
 [[package]]
 name = "prost"
-version = "0.12.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "deb1435c188b76130da55f17a466d252ff7b1418b2ad3e037d127b94e3411f29"
-dependencies = [
- "bytes",
- "prost-derive 0.12.6",
-]
-
-[[package]]
-name = "prost"
 version = "0.13.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2c0fef6c4230e4ccf618a35c59d7ede15dea37de8427500f50aff708806e42ec"
 dependencies = [
  "bytes",
- "prost-derive 0.13.4",
+ "prost-derive",
 ]
 
 [[package]]
 name = "prost-build"
-version = "0.12.6"
+version = "0.13.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "22505a5c94da8e3b7c2996394d1c933236c4d743e81a410bcca4e6989fc066a4"
+checksum = "d0f3e5beed80eb580c68e2c600937ac2c4eedabdfd5ef1e5b7ea4f3fba84497b"
 dependencies = [
- "bytes",
  "heck",
- "itertools 0.12.1",
+ "itertools 0.11.0",
  "log",
  "multimap",
  "once_cell",
  "petgraph",
  "prettyplease",
- "prost 0.12.6",
- "prost-types 0.12.6",
+ "prost",
+ "prost-types",
  "regex",
  "syn 2.0.92",
  "tempfile",
-]
-
-[[package]]
-name = "prost-derive"
-version = "0.12.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "81bddcdb20abf9501610992b6759a4c888aef7d1a7247ef75e2404275ac24af1"
-dependencies = [
- "anyhow",
- "itertools 0.12.1",
- "proc-macro2",
- "quote",
- "syn 2.0.92",
 ]
 
 [[package]]
@@ -5034,20 +5042,11 @@ dependencies = [
 
 [[package]]
 name = "prost-types"
-version = "0.12.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9091c90b0a32608e984ff2fa4091273cbdd755d54935c51d520887f4a1dbd5b0"
-dependencies = [
- "prost 0.12.6",
-]
-
-[[package]]
-name = "prost-types"
 version = "0.13.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cc2f1e56baa61e93533aebc21af4d2134b70f66275e0fcdf3cbe43d77ff7e8fc"
 dependencies = [
- "prost 0.13.4",
+ "prost",
 ]
 
 [[package]]
@@ -6112,9 +6111,9 @@ dependencies = [
 
 [[package]]
 name = "tendermint"
-version = "0.38.1"
+version = "0.40.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "505d9d6ffeb83b1de47c307c6e0d2dff56c6256989299010ad03cd80a8491e97"
+checksum = "d9703e34d940c2a293804752555107f8dbe2b84ec4c6dd5203831235868105d2"
 dependencies = [
  "bytes",
  "digest 0.10.7",
@@ -6125,8 +6124,7 @@ dependencies = [
  "k256",
  "num-traits",
  "once_cell",
- "prost 0.13.4",
- "prost-types 0.13.4",
+ "prost",
  "ripemd",
  "serde",
  "serde_bytes",
@@ -6143,9 +6141,9 @@ dependencies = [
 
 [[package]]
 name = "tendermint-config"
-version = "0.38.1"
+version = "0.40.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9de111ea653b2adaef627ac2452b463c77aa615c256eaaddf279ec5a1cf9775f"
+checksum = "89cc3ea9a39b7ee34eefcff771cc067ecaa0c988c1c5ac08defd878471a06f76"
 dependencies = [
  "flex-error",
  "serde",
@@ -6157,9 +6155,9 @@ dependencies = [
 
 [[package]]
 name = "tendermint-light-client-verifier"
-version = "0.38.1"
+version = "0.40.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7a2674adbf0dc51aa0c8eaf8462c7d6692ec79502713e50ed5432a442002be90"
+checksum = "f0cda4a449fc70985a95f892a67286f13afa4e048d90b8d04a2bf6341e88d1c2"
 dependencies = [
  "derive_more 0.99.18",
  "flex-error",
@@ -6170,14 +6168,17 @@ dependencies = [
 
 [[package]]
 name = "tendermint-proto"
-version = "0.38.1"
+version = "0.40.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8ed14abe3b0502a3afe21ca74ca5cdd6c7e8d326d982c26f98a394445eb31d6e"
+checksum = "9ae9e1705aa0fa5ecb2c6aa7fb78c2313c4a31158ea5f02048bf318f849352eb"
 dependencies = [
+ "borsh",
  "bytes",
  "flex-error",
- "prost 0.13.4",
- "prost-types 0.13.4",
+ "parity-scale-codec",
+ "prost",
+ "scale-info",
+ "schemars",
  "serde",
  "serde_bytes",
  "subtle-encoding",
@@ -6186,9 +6187,9 @@ dependencies = [
 
 [[package]]
 name = "tendermint-rpc"
-version = "0.38.1"
+version = "0.40.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "02f96a2b8a0d3d0b59e4024b1a6bdc1589efc6af4709d08a480a20cc4ba90f63"
+checksum = "835a52aa504c63ec05519e31348d3f4ba2fe79493c588e2cad5323d5e81b161a"
 dependencies = [
  "async-trait",
  "bytes",
@@ -6502,13 +6503,14 @@ dependencies = [
 
 [[package]]
 name = "tonic-build"
-version = "0.11.0"
+version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "be4ef6dd70a610078cb4e338a0f79d06bc759ff1b22d2120c2ff02ae264ba9c2"
+checksum = "9557ce109ea773b399c9b9e5dca39294110b74f1f342cb347a80d1fce8c26a11"
 dependencies = [
  "prettyplease",
  "proc-macro2",
  "prost-build",
+ "prost-types",
  "quote",
  "syn 2.0.92",
 ]
@@ -6638,6 +6640,18 @@ name = "uint"
 version = "0.9.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "76f64bba2c53b04fcab63c01a7d7427eadc821e3bc48c34dc9ba29c501164b52"
+dependencies = [
+ "byteorder",
+ "crunchy",
+ "hex",
+ "static_assertions",
+]
+
+[[package]]
+name = "uint"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "909988d098b2f738727b161a106cfc7cab00c539c2687a8836f8e565976fb53e"
 dependencies = [
  "byteorder",
  "crunchy",
