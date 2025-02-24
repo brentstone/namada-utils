@@ -1,4 +1,5 @@
 use namada_core::token;
+use namada_ibc::trace::ibc_token;
 use namada_proof_of_stake::types::{BondId, BondsAndUnbondsDetail};
 use namada_sdk::address::Address;
 use namada_sdk::collections::HashMap;
@@ -44,6 +45,32 @@ pub fn get_public_alloc_balance() -> token::Amount {
 
 pub fn get_pg_validator_balance() -> token::Amount {
     token::Amount::native_whole(205)
+}
+
+pub fn get_ibc_tokens() -> HashMap<String, String> {
+    HashMap::from_iter(vec![
+        (
+            String::from("OSMO"),
+            String::from("transfer/channel-1/uosmo"),
+        ),
+        (
+            String::from("ATOM"),
+            String::from("transfer/channel-2/uatom"),
+        ),
+        (String::from("TIA"), String::from("transfer/channel-3/utia")),
+        (
+            String::from("stOSMO"),
+            String::from("transfer/channel-0/stuosmo"),
+        ),
+        (
+            String::from("stATOM"),
+            String::from("transfer/channel-0/stuatom"),
+        ),
+        (
+            String::from("stTIA"),
+            String::from("transfer/channel-0/stutia"),
+        ),
+    ])
 }
 
 pub async fn build_ctx() -> NamadaImpl<HttpClient, FsWalletUtils, FsShieldedUtils, NullIo> {
@@ -93,6 +120,10 @@ pub fn get_addresses(rel_path: &str) -> Vec<Address> {
         .lines()
         .map(|line| Address::from_str(line).expect("Could not parse address"))
         .collect()
+}
+
+pub fn get_address_from_ibc_denom(denom: &str) -> Address {
+    ibc_token(denom)
 }
 
 #[derive(Deserialize, Debug)]
