@@ -13,9 +13,14 @@ use namada_sdk::{
     wallet::fs::FsWalletUtils,
     Namada, NamadaImpl,
 };
+use serde::de::DeserializeOwned;
 use serde::Deserialize;
 use serde_json::from_reader;
+use std::error::Error;
+use std::fmt::Debug;
+use std::fs::File;
 use std::io::BufReader;
+use std::path::Path;
 use std::str::FromStr;
 use tendermint_rpc::{HttpClient, Url};
 
@@ -196,6 +201,20 @@ pub fn get_bonds_to_top_validators(
         }
     }
     bonds_to_top_validators
+}
+
+// Function to read a CSV file and parse it into an object that can be implemented later
+pub fn read_csv_to_vec<T, P: AsRef<Path>>(filename: P) -> Result<Vec<T>, Box<dyn Error>> where T: Debug + DeserializeOwned {
+    let file = File::open(filename)?;
+    let mut rdr = csv::Reader::from_reader(file);
+
+    let mut entries = Vec::new();
+    for result in rdr.deserialize() {
+        let record: T = result?;
+        entries.push(record);
+    }
+
+    Ok(entries)
 }
 
 // Write some tests
