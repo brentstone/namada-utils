@@ -3,6 +3,7 @@ use namada_ibc::trace::ibc_token;
 use namada_proof_of_stake::types::{BondId, BondsAndUnbondsDetail};
 use namada_sdk::address::Address;
 use namada_sdk::collections::HashMap;
+use namada_sdk::key::common::SecretKey;
 use namada_sdk::queries::vp::pos::Enriched;
 use namada_sdk::{
     args::TxBuilder,
@@ -13,8 +14,11 @@ use namada_sdk::{
     wallet::fs::FsWalletUtils,
     Namada, NamadaImpl,
 };
+use serde::de::DeserializeOwned;
 use serde::Deserialize;
 use serde_json::from_reader;
+use std::error::Error;
+use std::fmt::Debug;
 use std::io::BufReader;
 use std::str::FromStr;
 use tendermint_rpc::{HttpClient, Url};
@@ -196,6 +200,48 @@ pub fn get_bonds_to_top_validators(
         }
     }
     bonds_to_top_validators
+}
+
+// Function to read a CSV file and parse it into an object that can be implemented later
+pub fn read_csv_to_vec<T>(rel_path: &str) -> Result<Vec<T>, Box<dyn Error>>
+where
+    T: Debug + DeserializeOwned,
+{
+    let path = get_full_path(rel_path);
+    let file = std::fs::File::open(path).expect("Could not open genesis accounts file");
+    let mut rdr = csv::Reader::from_reader(file);
+
+    let mut entries = Vec::new();
+    for result in rdr.deserialize() {
+        let record: T = result?;
+        entries.push(record);
+    }
+
+    Ok(entries)
+}
+
+#[derive(Debug, Deserialize)]
+struct AddressWithKey {
+    address: String,
+    pk: String,
+}
+
+pub async fn load_keys(
+    sdk: &NamadaImpl<HttpClient, FsWalletUtils, FsShieldedUtils, NullIo>,
+    rel_path: &str,
+) {
+    let data = read_csv_to_vec::<AddressWithKey>(rel_path).expect("Failed to read CSV");
+    for (idx, AddressWithKey { address, pk }) in data.iter().enumerate() {
+        println!("{}: {}", address, pk);
+        let sk = SecretKey::from_str(pk).expect("Failed to parse secret key");
+        let addr = Address::from_str(address).expect("Failed to parse address");
+
+        sdk.wallet_mut()
+            .await
+            .insert_keypair(format!("key-{}", idx), false, sk, None, Some(addr), None)
+            .expect("Failed to store keypair in wallet");
+    }
+    sdk.wallet().await.save().expect("Could not save wallet!");
 }
 
 // Write some tests
