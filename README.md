@@ -8,7 +8,7 @@ Some tools and utilities for looking at Namada blockchain data
     export NAMADA_UTILS_DIR="/path/to/repo"
     ```
 2. Install the `namada` binaries, particularly `namadac` and `namadaw`, and place them in your `$PATH`. Currently compatible with [v1.1.1](https://github.com/anoma/namada/releases/tag/v1.1.1).
-3. For any personal accounts for which you want to query information (like balances, bonds), place the addresses in `config/my_addresses.txt`. One address per line without commas.
+3. Fill in the `config/config.toml`. Any transparent addresses, like your own, that you would like to query in various programs can be placed in there, with quotations around the address.
 
 ## Installation
 
