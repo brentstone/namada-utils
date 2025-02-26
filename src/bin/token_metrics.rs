@@ -1,9 +1,35 @@
-use namada_sdk::{rpc, Namada};
-use namada_tools::{build_ctx, get_address_from_ibc_denom, get_ibc_tokens, load_wallet};
+use namada_sdk::{collections::HashMap, rpc, Namada};
+use namada_tools::{build_ctx, get_address_from_ibc_denom, load_wallet};
+
+pub fn get_mainnet_ibc_nicknames() -> HashMap<String, String> {
+    HashMap::from_iter(vec![
+        (
+            String::from("transfer/channel-1/uosmo"),
+            String::from("OSMO"),
+        ),
+        (
+            String::from("transfer/channel-2/uatom"),
+            String::from("ATOM"),
+        ),
+        (String::from("transfer/channel-3/utia"), String::from("TIA")),
+        (
+            String::from("transfer/channel-0/stuosmo"),
+            String::from("stOSMO"),
+        ),
+        (
+            String::from("transfer/channel-0/stuatom"),
+            String::from("stATOM"),
+        ),
+        (
+            String::from("transfer/channel-0/stutia"),
+            String::from("stTIA"),
+        ),
+    ])
+}
 
 #[tokio::main]
 async fn main() {
-    let sdk = build_ctx().await;
+    let (sdk, config) = build_ctx().await;
 
     // Wallet things
     load_wallet(&sdk).await;
@@ -16,15 +42,21 @@ async fn main() {
         .unwrap()
         .into_owned();
 
-    let ibc_tokens = get_ibc_tokens();
+    let ibc_tokens = config.ibc_tokens;
+    let ibc_nicknames = get_mainnet_ibc_nicknames();
 
-    println!("\n--- Whitelisted non-native tokens --------");
-    for (token, denom) in &ibc_tokens {
-        println!("{token}: {denom}");
+    println!("\n--- Non-native tokens in Config --------");
+    for trace in &ibc_tokens {
+        if let Some(token) = ibc_nicknames.get(trace) {
+            println!("{}: {}", token, trace);
+        } else {
+            println!("{trace}");
+        }
     }
 
     println!("\n--- Total supply in Namada --------");
-    for (token, denom) in &ibc_tokens {
+    for denom in &ibc_tokens {
+        let token = ibc_nicknames.get(denom).unwrap_or(denom);
         let total_supply =
             rpc::get_token_total_supply(&sdk.client, &get_address_from_ibc_denom(denom))
                 .await
@@ -33,7 +65,8 @@ async fn main() {
     }
 
     println!("\n--- Total supply in the MASP --------");
-    for (token, denom) in &ibc_tokens {
+    for denom in &ibc_tokens {
+        let token = ibc_nicknames.get(denom).unwrap_or(denom);
         let masp_balance = rpc::get_token_balance(
             &sdk.client,
             &get_address_from_ibc_denom(denom),

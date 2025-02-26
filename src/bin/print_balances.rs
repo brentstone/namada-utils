@@ -5,7 +5,7 @@ use namada_tools::{build_ctx, get_addresses, load_wallet};
 
 #[tokio::main]
 async fn main() {
-    let sdk = build_ctx().await;
+    let (sdk, config) = build_ctx().await;
 
     // Wallet things
     load_wallet(&sdk).await;
@@ -17,7 +17,7 @@ async fn main() {
         .expect("Query epoch error");
     println!("Current epoch: {}\n", current_epoch);
 
-    let my_addresses = get_addresses("config/my_addresses.txt");
+    let my_addresses = get_addresses(&config);
 
     let mut total_balance = token::Amount::zero();
     let mut total_bonded = token::Amount::zero();

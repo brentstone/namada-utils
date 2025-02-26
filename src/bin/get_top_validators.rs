@@ -6,7 +6,7 @@ use namada_tools::{build_ctx, load_wallet};
 
 #[tokio::main]
 async fn main() {
-    let sdk = build_ctx().await;
+    let (sdk, _config) = build_ctx().await;
 
     // Wallet things
     load_wallet(&sdk).await;

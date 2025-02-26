@@ -1,0 +1,13 @@
+chain_id = "namada.5f5de2dd1b88cba30586420"
+ibc_tokens = [
+    "transfer/channel-1/uosmo",
+    "transfer/channel-2/uatom",
+    "transfer/channel-3/utia",
+    "transfer/channel-0/stuosmo",
+    "transfer/channel-0/stuatom",
+    "transfer/channel-0/stutia"
+]
+transparent_addresses = [
+    "tnam1q..",
+    "tnam1q..",
+]
