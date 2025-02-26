@@ -21,7 +21,7 @@ fn convert_to_hours(seconds: u64) -> String {
 
 #[tokio::main]
 async fn main() {
-    let sdk = build_ctx().await;
+    let (sdk, _config) = build_ctx().await;
 
     // Wallet things
     load_wallet(&sdk).await;

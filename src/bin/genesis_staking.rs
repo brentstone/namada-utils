@@ -9,14 +9,14 @@ use namada_sdk::{
 };
 use namada_token::Dec;
 use namada_tools::{
-    build_ctx, get_addresses, get_backer_balance, get_bonds_to_top_validators, get_core_balance,
-    get_future_alloc_balance, get_genesis_accounts, get_pg_validator_balance,
+    build_ctx, get_addresses_from_file, get_backer_balance, get_bonds_to_top_validators,
+    get_core_balance, get_future_alloc_balance, get_genesis_accounts, get_pg_validator_balance,
     get_public_alloc_balance, get_rd_balance, load_wallet, Record,
 };
 
 #[tokio::main]
 async fn main() {
-    let sdk = build_ctx().await;
+    let (sdk, _config) = build_ctx().await;
 
     // Wallet things
     load_wallet(&sdk).await;
@@ -65,7 +65,7 @@ async fn main() {
             }
         };
 
-    let sources = get_addresses("config/backers.txt");
+    let sources = get_addresses_from_file("config/backers.txt");
     for delegator in sources {
         let bonds =
             enriched_bonds_and_unbonds(&sdk.client, current_epoch, &Some(delegator.clone()), &None)
@@ -151,7 +151,7 @@ async fn main() {
     let mut core_stake = token::Amount::zero();
     let mut core_team_bonds_to_top_vals = HashMap::<String, token::Amount>::new();
 
-    for delegator in get_addresses("config/core_team.txt") {
+    for delegator in get_addresses_from_file("config/core_team.txt") {
         let bonds =
             enriched_bonds_and_unbonds(&sdk.client, current_epoch, &Some(delegator.clone()), &None)
                 .await

@@ -47,33 +47,29 @@ pub fn get_pg_validator_balance() -> token::Amount {
     token::Amount::native_whole(205)
 }
 
-pub fn get_ibc_tokens() -> HashMap<String, String> {
-    HashMap::from_iter(vec![
-        (
-            String::from("OSMO"),
-            String::from("transfer/channel-1/uosmo"),
-        ),
-        (
-            String::from("ATOM"),
-            String::from("transfer/channel-2/uatom"),
-        ),
-        (String::from("TIA"), String::from("transfer/channel-3/utia")),
-        (
-            String::from("stOSMO"),
-            String::from("transfer/channel-0/stuosmo"),
-        ),
-        (
-            String::from("stATOM"),
-            String::from("transfer/channel-0/stuatom"),
-        ),
-        (
-            String::from("stTIA"),
-            String::from("transfer/channel-0/stutia"),
-        ),
-    ])
+fn get_full_path(rel_path: &str) -> String {
+    let base_dir = std::env::var(NAMADA_UTILS_DIR).expect("NAMADA_UTILS_DIR env var not set");
+    format!("{base_dir}/{rel_path}")
 }
 
-pub async fn build_ctx() -> NamadaImpl<HttpClient, FsWalletUtils, FsShieldedUtils, NullIo> {
+#[derive(Debug, Deserialize)]
+pub struct ConfigParams {
+    pub chain_id: String,
+    pub ibc_tokens: Vec<String>,
+    pub transparent_addresses: Vec<String>,
+}
+
+fn load_config(rel_path: &str) -> Result<ConfigParams, Box<dyn std::error::Error>> {
+    let path = get_full_path(rel_path);
+    let contents = std::fs::read_to_string(path.as_str())?;
+    let config: ConfigParams = toml::from_str(&contents)?;
+    Ok(config)
+}
+
+pub async fn build_ctx() -> (
+    NamadaImpl<HttpClient, FsWalletUtils, FsShieldedUtils, NullIo>,
+    ConfigParams,
+) {
     let rpc_url = std::env::var(RPC_ENV_VAR).expect("RPC_NAMADA_UTILS env var not set");
     let url = Url::from_str(&rpc_url).expect("Invalid RPC address");
     let http_client = HttpClient::new(url).unwrap();
@@ -83,10 +79,14 @@ pub async fn build_ctx() -> NamadaImpl<HttpClient, FsWalletUtils, FsShieldedUtil
     let shielded_ctx = ShieldedContext::new(FsShieldedUtils::new("./masp".into()));
     let null_io = NullIo;
 
-    NamadaImpl::new(http_client, wallet, shielded_ctx.into(), null_io)
+    let config = load_config("config/config.toml").expect("Could not load config file");
+
+    let sdk = NamadaImpl::new(http_client, wallet, shielded_ctx.into(), null_io)
         .await
         .expect("unable to initialize Namada context")
-        .chain_id(ChainId::from_str("namada.5f5de2dd1b88cba30586420").unwrap())
+        .chain_id(ChainId::from_str(&config.chain_id).unwrap());
+
+    (sdk, config)
 }
 
 pub async fn load_wallet(sdk: &NamadaImpl<HttpClient, FsWalletUtils, FsShieldedUtils, NullIo>) {
@@ -112,9 +112,16 @@ pub async fn load_wallet(sdk: &NamadaImpl<HttpClient, FsWalletUtils, FsShieldedU
     sdk.wallet().await.save().expect("Could not save wallet!");
 }
 
-pub fn get_addresses(rel_path: &str) -> Vec<Address> {
-    let base_dir = std::env::var(NAMADA_UTILS_DIR).expect("NAMADA_UTILS_DIR env var not set");
-    let path = format!("{base_dir}/{rel_path}");
+pub fn get_addresses(config: &ConfigParams) -> Vec<Address> {
+    config
+        .transparent_addresses
+        .iter()
+        .map(|addr| Address::from_str(addr).expect("Could not parse address"))
+        .collect()
+}
+
+pub fn get_addresses_from_file(rel_path: &str) -> Vec<Address> {
+    let path = get_full_path(rel_path);
     let addresses = std::fs::read_to_string(path).expect("Could not read addresses file");
     addresses
         .lines()
@@ -135,8 +142,7 @@ pub struct Record {
 }
 
 pub fn get_genesis_accounts(rel_path: &str) -> Vec<Record> {
-    let base_dir = std::env::var(NAMADA_UTILS_DIR).expect("NAMADA_UTILS_DIR env var not set");
-    let path = format!("{base_dir}/{rel_path}");
+    let path = get_full_path(rel_path);
     let file = std::fs::File::open(path).expect("Could not open genesis accounts file");
     let reader = BufReader::new(file);
     from_reader(reader).expect("Could not parse genesis accounts file")
