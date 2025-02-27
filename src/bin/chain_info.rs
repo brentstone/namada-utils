@@ -3,7 +3,7 @@ use std::str::FromStr;
 use namada_proof_of_stake::rewards::PosRewardsRates;
 use namada_sdk::{rpc, state::LastBlock, time::DateTimeUtc, Namada};
 use namada_token::Dec;
-use namada_tools::{build_ctx, load_wallet};
+use namada_utils::{build_ctx, load_wallet};
 
 fn convert_to_hours(seconds: u64) -> String {
     let hours = seconds / 3600;

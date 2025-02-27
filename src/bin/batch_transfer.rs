@@ -10,7 +10,7 @@ use namada_sdk::{
     wallet::fs::FsWalletUtils,
     Namada, NamadaImpl,
 };
-use namada_tools::{build_ctx, load_keys, load_wallet, read_csv_to_vec};
+use namada_utils::{build_ctx, load_keys, load_wallet, read_csv_to_vec};
 use serde::Deserialize;
 use tendermint_rpc::HttpClient;
 

@@ -8,7 +8,7 @@ use namada_sdk::{
     rpc::{self, enriched_bonds_and_unbonds},
 };
 use namada_token::Dec;
-use namada_tools::{
+use namada_utils::{
     build_ctx, get_addresses_from_file, get_backer_balance, get_bonds_to_top_validators,
     get_core_balance, get_future_alloc_balance, get_genesis_accounts, get_pg_validator_balance,
     get_public_alloc_balance, get_rd_balance, load_wallet, Record,

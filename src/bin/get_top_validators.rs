@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use namada_sdk::rpc;
 use namada_token::Dec;
-use namada_tools::{build_ctx, load_wallet};
+use namada_utils::{build_ctx, load_wallet};
 
 #[tokio::main]
 async fn main() {
