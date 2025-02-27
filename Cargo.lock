@@ -3631,7 +3631,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "namada-tools"
+name = "namada-utils"
 version = "0.1.0"
 dependencies = [
  "csv",
