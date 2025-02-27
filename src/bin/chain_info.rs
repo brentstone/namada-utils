@@ -3,7 +3,7 @@ use std::str::FromStr;
 use namada_proof_of_stake::rewards::PosRewardsRates;
 use namada_sdk::{rpc, state::LastBlock, time::DateTimeUtc, Namada};
 use namada_token::Dec;
-use namada_utils::{build_ctx, load_wallet};
+use namada_utils::{build_ctx, get_circulating_supply, load_wallet};
 
 fn convert_to_hours(seconds: u64) -> String {
     let hours = seconds / 3600;
@@ -106,6 +106,16 @@ async fn main() {
     let gov_balance = rpc::get_token_balance(&sdk.client, &native_token, &gov_address, None)
         .await
         .unwrap();
+    let circ_supply = get_circulating_supply(&sdk).await;
+    let total_native_supply = rpc::get_token_total_supply(&sdk.client, &native_token)
+        .await
+        .unwrap();
+
+    println!(
+        "Absolute total native supply: {} NAM",
+        total_native_supply.to_string_native()
+    );
+    println!("Circulating supply: {} NAM", circ_supply.to_string_native());
     println!("PGF balance: {} NAM", pgf_balance.to_string_native());
     println!("Gov balance: {} NAM", gov_balance.to_string_native());
 
