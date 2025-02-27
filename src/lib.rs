@@ -51,6 +51,26 @@ pub fn get_pg_validator_balance() -> token::Amount {
     token::Amount::native_whole(205)
 }
 
+pub async fn get_circulating_supply(
+    sdk: &NamadaImpl<HttpClient, FsWalletUtils, FsShieldedUtils, NullIo>,
+) -> token::Amount {
+    let eff_supply = rpc::get_effective_native_supply(&sdk.client)
+        .await
+        .expect("Failed to query effective native supply");
+
+    let native_token = Address::from_str("tnam1q9gr66cvu4hrzm0sd5kmlnjje82gs3xlfg3v6nu7").unwrap();
+
+    let mut locked_supply = token::Amount::zero();
+    for rec in get_genesis_accounts("config/public_allocations_future.json") {
+        let addr = Address::from_str(&rec.address).expect("Failed to parse address");
+        let balance = rpc::get_token_balance(&sdk.client, &native_token, &addr, None)
+            .await
+            .expect("Failed to query balance");
+        locked_supply = locked_supply.checked_add(balance).unwrap();
+    }
+    eff_supply.checked_sub(locked_supply).unwrap()
+}
+
 fn get_full_path(rel_path: &str) -> String {
     let base_dir = std::env::var(NAMADA_UTILS_DIR).expect("NAMADA_UTILS_DIR env var not set");
     format!("{base_dir}/{rel_path}")
