@@ -1,5 +1,5 @@
 use namada_sdk::{collections::HashMap, rpc, Namada};
-use namada_tools::{build_ctx, get_address_from_ibc_denom, load_wallet};
+use namada_utils::{build_ctx, get_address_from_ibc_denom, load_wallet};
 
 pub fn get_mainnet_ibc_nicknames() -> HashMap<String, String> {
     HashMap::from_iter(vec![

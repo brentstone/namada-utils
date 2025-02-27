@@ -1,7 +1,7 @@
 use namada_core::token;
 use namada_proof_of_stake::types::BondId;
 use namada_sdk::{rpc, Namada};
-use namada_tools::{build_ctx, get_addresses, load_wallet};
+use namada_utils::{build_ctx, get_addresses, load_wallet};
 
 #[tokio::main]
 async fn main() {
