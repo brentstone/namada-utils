@@ -3,7 +3,7 @@ use namada_sdk::eth_bridge::ethers::core::rand;
 use namada_sdk::key::common::SecretKey;
 use namada_sdk::key::ed25519::SigScheme as ed25519SigScheme;
 use namada_sdk::key::{PublicKeyHash, RefTo, SigScheme};
-use namada_utils::{build_ctx, load_wallet};
+use namada_utils::build_ctx;
 use rand::rngs::OsRng;
 
 #[allow(dead_code)]
@@ -19,6 +19,5 @@ fn generate_keypair() {
 
 #[tokio::main]
 async fn main() {
-    let (sdk, _config) = build_ctx().await;
-    load_wallet(&sdk).await;
+    let (_sdk, _config) = build_ctx().await;
 }
