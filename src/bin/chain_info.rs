@@ -96,7 +96,7 @@ async fn main() {
 
     println!("\n---------- Balances -------------\n");
     let pgf_address = sdk.wallet().await.find_address("pgf").unwrap().into_owned();
-    let gov_address = sdk.wallet().await.find_address("gov").unwrap().into_owned();
+    let gov_address = sdk.wallet().await.find_address("governance").unwrap().into_owned();
     let pgf_balance = rpc::get_token_balance(&sdk.client, &native_token, &pgf_address, None)
         .await
         .unwrap();
