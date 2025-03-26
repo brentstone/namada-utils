@@ -5,6 +5,7 @@ use namada_sdk::address::Address;
 use namada_sdk::collections::HashMap;
 use namada_sdk::key::common::SecretKey;
 use namada_sdk::queries::vp::pos::Enriched;
+use namada_sdk::wallet::Wallet;
 use namada_sdk::{
     args::TxBuilder,
     chain::ChainId,
@@ -93,11 +94,13 @@ pub async fn build_ctx() -> (
     (sdk, config)
 }
 
-pub fn get_addresses(config: &ConfigParams) -> Vec<Address> {
+pub fn get_addresses(wallet: &Wallet<FsWalletUtils>, config: &ConfigParams) -> Vec<Address> {
     config
         .transparent_addresses
         .iter()
-        .map(|addr| Address::from_str(addr).expect("Could not parse address"))
+        .map(|addr| if addr.starts_with("tnam") {Address::from_str(addr).expect("Could not parse address")} else {
+            wallet.find_address(addr).expect("Could not find address in wallet").into_owned()
+        })
         .collect()
 }
 
