@@ -2,14 +2,11 @@ use std::str::FromStr;
 
 use namada_sdk::rpc;
 use namada_token::Dec;
-use namada_utils::{build_ctx, load_wallet};
+use namada_utils::build_ctx;
 
 #[tokio::main]
 async fn main() {
     let (sdk, _config) = build_ctx().await;
-
-    // Wallet things
-    load_wallet(&sdk).await;
 
     let num_vals: usize = 25;
 
