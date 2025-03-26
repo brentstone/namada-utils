@@ -3,7 +3,7 @@ use std::str::FromStr;
 use namada_proof_of_stake::rewards::PosRewardsRates;
 use namada_sdk::{rpc, state::LastBlock, time::DateTimeUtc, Namada};
 use namada_token::Dec;
-use namada_utils::{build_ctx, load_wallet};
+use namada_utils::build_ctx;
 
 fn convert_to_hours(seconds: u64) -> String {
     let hours = seconds / 3600;
@@ -22,9 +22,6 @@ fn convert_to_hours(seconds: u64) -> String {
 #[tokio::main]
 async fn main() {
     let (sdk, _config) = build_ctx().await;
-
-    // Wallet things
-    load_wallet(&sdk).await;
 
     let native_token = sdk.wallet().await.find_address("nam").unwrap().into_owned();
 
@@ -99,7 +96,7 @@ async fn main() {
 
     println!("\n---------- Balances -------------\n");
     let pgf_address = sdk.wallet().await.find_address("pgf").unwrap().into_owned();
-    let gov_address = sdk.wallet().await.find_address("gov").unwrap().into_owned();
+    let gov_address = sdk.wallet().await.find_address("governance").unwrap().into_owned();
     let pgf_balance = rpc::get_token_balance(&sdk.client, &native_token, &pgf_address, None)
         .await
         .unwrap();

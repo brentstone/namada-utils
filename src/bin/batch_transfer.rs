@@ -10,7 +10,7 @@ use namada_sdk::{
     wallet::fs::FsWalletUtils,
     Namada, NamadaImpl,
 };
-use namada_utils::{build_ctx, load_keys, load_wallet, read_csv_to_vec};
+use namada_utils::{build_ctx, load_keys, read_csv_to_vec};
 use serde::Deserialize;
 use tendermint_rpc::HttpClient;
 
@@ -57,7 +57,6 @@ async fn main() {
     let (sdk, _config) = build_ctx().await;
 
     // Wallet things
-    load_wallet(&sdk).await;
     load_keys(&sdk, "config/keys.csv").await;
 
     let transfer_targets = load_transfer_targets("config/transfer_targets.csv");

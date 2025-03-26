@@ -8,7 +8,8 @@ Some tools and utilities for looking at Namada blockchain data
     export NAMADA_UTILS_DIR="/path/to/repo"
     ```
 2. Install the `namada` binaries, particularly `namadac` and `namadaw`, and place them in your `$PATH`. Currently compatible with [v1.1.1](https://github.com/anoma/namada/releases/tag/v1.1.1).
-3. Fill in the `config/config.toml`. Any transparent addresses, like your own, that you would like to query in various programs can be placed in there, with quotations around the address.
+3. Place a namada wallet `wallet.toml` within `./sdk-wallet/wallet.toml`. This can be copied from elsewhere in your file system or created and saved with the Namada SDK.
+4. Fill in the `config/config.toml`. Any transparent addresses, like your own, that you would like to query in various programs can be placed in there, with quotations around the address or the alias if it is already in your wallet.
 
 ## Batch transfers
 Transparent batch transfers from one address to an arbitrary number of addresses each with arbitrary amounts are currently supported with the `batch_transfer` binary. Provide the following to successfully run the binary:

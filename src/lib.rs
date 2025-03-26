@@ -5,12 +5,12 @@ use namada_sdk::address::Address;
 use namada_sdk::collections::HashMap;
 use namada_sdk::key::common::SecretKey;
 use namada_sdk::queries::vp::pos::Enriched;
+use namada_sdk::wallet::Wallet;
 use namada_sdk::{
     args::TxBuilder,
     chain::ChainId,
     io::NullIo,
     masp::{fs::FsShieldedUtils, ShieldedContext},
-    rpc,
     wallet::fs::FsWalletUtils,
     Namada, NamadaImpl,
 };
@@ -21,7 +21,7 @@ use std::error::Error;
 use std::fmt::Debug;
 use std::io::BufReader;
 use std::str::FromStr;
-use tendermint_rpc::{HttpClient, Url};
+use namada_sdk::tendermint_rpc::{HttpClient, Url};
 
 pub const RPC_ENV_VAR: &str = "RPC_NAMADA_UTILS";
 pub const NAMADA_UTILS_DIR: &str = "NAMADA_UTILS_DIR";
@@ -78,8 +78,9 @@ pub async fn build_ctx() -> (
     let url = Url::from_str(&rpc_url).expect("Invalid RPC address");
     let http_client = HttpClient::new(url).unwrap();
 
-    let wallet = FsWalletUtils::new("./sdk-wallet".into());
-    // let wallet = FsWalletStorage::load("./sdk-wallet".into());
+    let mut wallet = FsWalletUtils::new("./sdk-wallet".into());
+    wallet.load().expect("Failed to load wallet");
+
     let shielded_ctx = ShieldedContext::new(FsShieldedUtils::new("./masp".into()));
     let null_io = NullIo;
 
@@ -93,34 +94,13 @@ pub async fn build_ctx() -> (
     (sdk, config)
 }
 
-pub async fn load_wallet(sdk: &NamadaImpl<HttpClient, FsWalletUtils, FsShieldedUtils, NullIo>) {
-    let pgf_address = Address::from_str("tnam1pgqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqkhgajr").unwrap();
-    let gov_address = Address::from_str("tnam1q5qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqrw33g6").unwrap();
-    let native_token = rpc::query_native_token(&sdk.client)
-        .await
-        .expect("Query native token error");
-
-    sdk.wallet_mut()
-        .await
-        .insert_address("pgf", pgf_address.clone(), false)
-        .unwrap();
-    sdk.wallet_mut()
-        .await
-        .insert_address("nam", native_token.clone(), false)
-        .unwrap();
-    sdk.wallet_mut()
-        .await
-        .insert_address("gov", gov_address.clone(), false)
-        .unwrap();
-
-    sdk.wallet().await.save().expect("Could not save wallet!");
-}
-
-pub fn get_addresses(config: &ConfigParams) -> Vec<Address> {
+pub fn get_addresses(wallet: &Wallet<FsWalletUtils>, config: &ConfigParams) -> Vec<Address> {
     config
         .transparent_addresses
         .iter()
-        .map(|addr| Address::from_str(addr).expect("Could not parse address"))
+        .map(|addr| if addr.starts_with("tnam") {Address::from_str(addr).expect("Could not parse address")} else {
+            wallet.find_address(addr).expect("Could not find address in wallet").into_owned()
+        })
         .collect()
 }
 

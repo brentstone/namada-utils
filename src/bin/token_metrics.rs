@@ -1,5 +1,5 @@
 use namada_sdk::{collections::HashMap, rpc, Namada};
-use namada_utils::{build_ctx, get_address_from_ibc_denom, load_wallet};
+use namada_utils::{build_ctx, get_address_from_ibc_denom};
 
 pub fn get_mainnet_ibc_nicknames() -> HashMap<String, String> {
     HashMap::from_iter(vec![
@@ -30,9 +30,6 @@ pub fn get_mainnet_ibc_nicknames() -> HashMap<String, String> {
 #[tokio::main]
 async fn main() {
     let (sdk, config) = build_ctx().await;
-
-    // Wallet things
-    load_wallet(&sdk).await;
 
     // let native_token = sdk.wallet().await.find_address("nam").unwrap().into_owned();
     let masp_address = sdk

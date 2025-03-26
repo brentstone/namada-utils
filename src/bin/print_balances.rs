@@ -1,29 +1,27 @@
 use namada_core::token;
 use namada_proof_of_stake::types::BondId;
 use namada_sdk::{rpc, Namada};
-use namada_utils::{build_ctx, get_addresses, load_wallet};
+use namada_utils::{build_ctx, get_addresses};
 
 #[tokio::main]
 async fn main() {
     let (sdk, config) = build_ctx().await;
-
-    // Wallet things
-    load_wallet(&sdk).await;
-
-    let native_token = sdk.wallet().await.find_address("nam").unwrap().into_owned();
+    
+    let wallet = sdk.wallet().await;
+    let native_token = wallet.find_address("nam").expect("Native token address not found in wallet");
 
     let current_epoch = rpc::query_epoch(&sdk.client)
         .await
         .expect("Query epoch error");
     println!("Current epoch: {}\n", current_epoch);
 
-    let my_addresses = get_addresses(&config);
+    let my_addresses = get_addresses(&wallet, &config);
 
     let mut total_balance = token::Amount::zero();
     let mut total_bonded = token::Amount::zero();
     let mut total_rewards = token::Amount::zero();
     for (i, addr) in my_addresses.iter().enumerate() {
-        println!("Address-{i}:");
+        println!("{}:", config.transparent_addresses[i]);
         let balance = rpc::get_token_balance(&sdk.client, &native_token, addr, None)
             .await
             .unwrap();
