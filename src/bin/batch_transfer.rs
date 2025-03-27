@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+use clap::Parser;
 use namada_sdk::{
     address::Address,
     args::{InputAmount, TxBuilder, TxTransparentTransferData},
@@ -13,6 +14,14 @@ use namada_sdk::{
 use namada_utils::{build_ctx, load_keys, read_csv_to_vec};
 use serde::Deserialize;
 use tendermint_rpc::HttpClient;
+
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// Gas limit for the transaction
+    #[arg(short, long = "gas-limit", default_value_t = 50_000)]
+    gas_limit: u64,
+}
 
 #[derive(Debug, Deserialize)]
 struct TransferTarget {
@@ -50,9 +59,8 @@ async fn build_transfer_data(
 
 #[tokio::main]
 async fn main() {
-    // Parameters here for now
-    // TODO: impl CLI args for these
-    let gas_limit: u64 = 100_000;
+    let args = Args::parse();
+    let gas_limit = args.gas_limit;
 
     let (sdk, _config) = build_ctx().await;
 
