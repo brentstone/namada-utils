@@ -1,14 +1,25 @@
 use std::str::FromStr;
 
+use clap::Parser;
 use namada_sdk::rpc;
 use namada_token::Dec;
 use namada_utils::build_ctx;
 
+/// Argument parsing
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// Number of top validators to display
+    #[arg(short, long = "num-vals")]
+    num_vals: Option<u8>,
+}
+
 #[tokio::main]
 async fn main() {
+    let args = Args::parse();
     let (sdk, _config) = build_ctx().await;
 
-    let num_vals: usize = 25;
+    let num_vals = args.num_vals.unwrap_or(25);
 
     let current_epoch = rpc::query_epoch(&sdk.client)
         .await
@@ -31,7 +42,7 @@ async fn main() {
     println!("Top {} validators by stake (with cumulative VP):", num_vals);
     let mut cumulative_stake_frac = Dec::zero();
     for (i, val) in consensus_validators.iter().enumerate() {
-        if i >= num_vals {
+        if i >= num_vals as usize {
             break;
         }
         let stake_frac = Dec::try_from(val.bonded_stake)
