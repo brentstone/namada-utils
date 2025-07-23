@@ -3,17 +3,13 @@ use std::str::FromStr;
 use clap::Parser;
 use namada_sdk::{
     address::Address,
-    args::{InputAmount, TxBuilder, TxTransparentTransferData},
-    io::NullIo,
-    masp::fs::FsShieldedUtils,
+    args::{InputAmount, TxBuilder, TxTransparentSource, TxTransparentTarget},
     rpc,
     signing::default_sign,
-    wallet::fs::FsWalletUtils,
-    Namada, NamadaImpl,
+    Namada,
 };
 use namada_utils::{build_ctx, load_keys, read_csv_to_vec};
 use serde::Deserialize;
-use tendermint_rpc::HttpClient;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -21,6 +17,9 @@ struct Args {
     /// Gas limit for the transaction
     #[arg(short, long = "gas-limit", default_value_t = 50_000)]
     gas_limit: u64,
+    /// Gas limit for the transaction
+    #[arg(short, long = "token")]
+    token: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -33,54 +32,70 @@ fn load_transfer_targets(path: &str) -> Vec<TransferTarget> {
     read_csv_to_vec::<TransferTarget>(path).expect("Failed to read CSV")
 }
 
-async fn build_transfer_data(
-    sdk: &NamadaImpl<HttpClient, FsWalletUtils, FsShieldedUtils, NullIo>,
-    source: &str,
-    target: &str,
-    token: &Address,
-    raw_amount: u64,
-) -> TxTransparentTransferData {
-    let source = sdk
-        .wallet()
-        .await
-        .find_address(source)
-        .unwrap()
-        .into_owned();
-    let target = Address::from_str(target).unwrap();
-    let amount = InputAmount::from_str(raw_amount.to_string().as_str()).unwrap();
+// async fn build_transfer_data(
+//     sdk: &NamadaImpl<HttpClient, FsWalletUtils, FsShieldedUtils, NullIo>,
+//     source: &str,
+//     target: &str,
+//     token: &Address,
+//     raw_amount: u64,
+// ) -> TxTransparentTransferData {
+//     let source = sdk
+//         .wallet()
+//         .await
+//         .find_address(source)
+//         .unwrap()
+//         .into_owned();
+//     let target = Address::from_str(target).unwrap();
+//     let amount = InputAmount::from_str(raw_amount.to_string().as_str()).unwrap();
 
-    TxTransparentTransferData {
-        source,
-        target,
-        token: token.clone(),
-        amount,
-    }
-}
+//     TxTransparentTransferData {
+//         source,
+//         target,
+//         token: token.clone(),
+//         amount,
+//     }
+// }
 
 #[tokio::main]
 async fn main() {
     let args = Args::parse();
     let gas_limit = args.gas_limit;
+    let token = Address::from_str(&args.token).expect("Invalid token address");
 
     let (sdk, _config) = build_ctx().await;
 
     // Wallet things
     load_keys(&sdk, "config/keys.csv").await;
 
-    let transfer_targets = load_transfer_targets("config/transfer_targets.csv");
+    let transfer_sources = load_transfer_targets("config/transfer_sources.csv")
+        .into_iter()
+        .map(|a| TxTransparentSource {
+            source: Address::from_str(&a.address).unwrap(),
+            token: token.clone(),
+            amount: InputAmount::from_str(a.amount.to_string().as_str()).unwrap(),
+        })
+        .collect::<Vec<_>>();
+    let transfer_targets = load_transfer_targets("config/transfer_targets.csv")
+        .into_iter()
+        .map(|a| TxTransparentTarget {
+            target: Address::from_str(&a.address).unwrap(),
+            token: token.clone(),
+            amount: InputAmount::from_str(a.amount.to_string().as_str()).unwrap(),
+        })
+        .collect::<Vec<_>>();
 
-    let native_token = sdk.wallet().await.find_address("nam").unwrap().into_owned();
+    // let native_token = sdk.wallet().await.find_address("nam").unwrap().into_owned();
     let key = sdk.wallet().await.find_public_key("key-0").unwrap();
 
-    let token = native_token;
+    // let token = native_token;
 
-    let mut data = Vec::new();
-    for target in &transfer_targets {
-        data.push(build_transfer_data(&sdk, "key-0", &target.address, &token, target.amount).await);
-    }
+    // let mut data = Vec::new();
+    // for target in &transfer_targets {
+    //     data.push(build_transfer_data(&sdk, "key-0", &target.address, &token, target.amount).await);
+    // }
 
     let mut transfer_tx_builder = sdk
-        .new_transparent_transfer(data)
+        .new_transparent_transfer(transfer_sources, transfer_targets.clone())
         .signing_keys(vec![key.clone()])
         .gas_limit(gas_limit.into())
         .fee_token(token.clone());
@@ -106,9 +121,9 @@ async fn main() {
     }
 
     // Print some results out
-    for target in transfer_targets {
-        let target = Address::from_str(&target.address).unwrap();
-        let balance = rpc::get_token_balance(&sdk.client, &token, &target, None)
+    for target in &transfer_targets {
+        let target = &target.target;
+        let balance = rpc::get_token_balance(&sdk.client, &token, target, None)
             .await
             .unwrap();
         println!("{}:  {}", &target, balance.to_string_native());
