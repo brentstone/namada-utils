@@ -4,15 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-namada_core = { git = "https://github.com/anoma/namada", tag = "libs-v0.48.0" }
-namada_sdk = { git = "https://github.com/anoma/namada", tag = "libs-v0.48.0", default-features = false, features = ["std", "async-send", "download-params"] }
-namada_tx = { git = "https://github.com/anoma/namada", tag = "libs-v0.48.0" }
-namada_governance = { git = "https://github.com/anoma/namada", tag = "libs-v0.48.0" }
-namada_ibc = { git = "https://github.com/anoma/namada", tag = "libs-v0.48.0" }
-namada_token = { git = "https://github.com/anoma/namada", tag = "libs-v0.48.0" }
-namada_parameters = { git = "https://github.com/anoma/namada", tag = "libs-v0.48.0" }
-namada_proof_of_stake = { git = "https://github.com/anoma/namada", tag = "libs-v0.48.0" }
-tendermint-rpc = { version = "0.40.1", features = ["http-client"] }
+namada_core = { git = "https://github.com/anoma/namada", tag = "libs-v0.251.0" }
+namada_sdk = { git = "https://github.com/anoma/namada", tag = "libs-v0.251.0", default-features = false, features = ["std", "async-send", "download-params"] }
+namada_tx = { git = "https://github.com/anoma/namada", tag = "libs-v0.251.0" }
+namada_governance = { git = "https://github.com/anoma/namada", tag = "libs-v0.251.0" }
+namada_ibc = { git = "https://github.com/anoma/namada", tag = "libs-v0.251.0" }
+namada_token = { git = "https://github.com/anoma/namada", tag = "libs-v0.251.0" }
+namada_parameters = { git = "https://github.com/anoma/namada", tag = "libs-v0.251.0" }
+namada_proof_of_stake = { git = "https://github.com/anoma/namada", tag = "libs-v0.251.0" }
+tendermint-rpc = { version = "0.40.3", features = ["http-client"] }
 tokio = { version = "1.0", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
