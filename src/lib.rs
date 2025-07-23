@@ -5,6 +5,7 @@ use namada_sdk::address::Address;
 use namada_sdk::collections::HashMap;
 use namada_sdk::key::common::SecretKey;
 use namada_sdk::queries::vp::pos::Enriched;
+use namada_sdk::tendermint_rpc::{HttpClient, Url};
 use namada_sdk::wallet::Wallet;
 use namada_sdk::{
     args::TxBuilder,
@@ -21,7 +22,6 @@ use std::error::Error;
 use std::fmt::Debug;
 use std::io::BufReader;
 use std::str::FromStr;
-use namada_sdk::tendermint_rpc::{HttpClient, Url};
 
 pub const RPC_ENV_VAR: &str = "RPC_NAMADA_UTILS";
 pub const NAMADA_UTILS_DIR: &str = "NAMADA_UTILS_DIR";
@@ -98,8 +98,15 @@ pub fn get_addresses(wallet: &Wallet<FsWalletUtils>, config: &ConfigParams) -> V
     config
         .transparent_addresses
         .iter()
-        .map(|addr| if addr.starts_with("tnam") {Address::from_str(addr).expect("Could not parse address")} else {
-            wallet.find_address(addr).expect("Could not find address in wallet").into_owned()
+        .map(|addr| {
+            if addr.starts_with("tnam") {
+                Address::from_str(addr).expect("Could not parse address")
+            } else {
+                wallet
+                    .find_address(addr)
+                    .expect("Could not find address in wallet")
+                    .into_owned()
+            }
         })
         .collect()
 }
@@ -183,11 +190,10 @@ pub fn get_bonds_to_top_validators(
 }
 
 // Function to read a CSV file and parse it into an object that can be implemented later
-pub fn read_csv_to_vec<T>(rel_path: &str) -> Result<Vec<T>, Box<dyn Error>>
+pub fn read_csv_to_vec<T>(path: &str) -> Result<Vec<T>, Box<dyn Error>>
 where
     T: Debug + DeserializeOwned,
 {
-    let path = get_full_path(rel_path);
     let file = std::fs::File::open(path).expect("Could not open genesis accounts file");
     let mut rdr = csv::Reader::from_reader(file);
 
@@ -210,9 +216,9 @@ pub async fn load_keys(
     sdk: &NamadaImpl<HttpClient, FsWalletUtils, FsShieldedUtils, NullIo>,
     rel_path: &str,
 ) {
-    let data = read_csv_to_vec::<AddressWithKey>(rel_path).expect("Failed to read CSV");
+    let path = get_full_path(rel_path);
+    let data = read_csv_to_vec::<AddressWithKey>(&path).expect("Failed to read CSV");
     for (idx, AddressWithKey { address, pk }) in data.iter().enumerate() {
-        println!("{}: {}", address, pk);
         let sk = SecretKey::from_str(pk).expect("Failed to parse secret key");
         let addr = Address::from_str(address).expect("Failed to parse address");
 
@@ -220,6 +226,7 @@ pub async fn load_keys(
             .await
             .insert_keypair(format!("key-{}", idx), false, sk, None, Some(addr), None)
             .expect("Failed to store keypair in wallet");
+        println!("Inserted private key for {}", address);
     }
     sdk.wallet().await.save().expect("Could not save wallet!");
 }
