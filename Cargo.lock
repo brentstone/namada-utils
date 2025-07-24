@@ -3933,6 +3933,7 @@ dependencies = [
  "csv",
  "getrandom 0.3.2",
  "js-sys",
+ "namada_controller",
  "namada_core",
  "namada_governance",
  "namada_ibc",
