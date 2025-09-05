@@ -6,7 +6,7 @@ use namada_sdk::borsh::BorshDeserialize;
 use namada_sdk::collections::HashMap;
 use namada_sdk::io::NullIo;
 use namada_sdk::masp::fs::FsShieldedUtils;
-use namada_sdk::rpc::{get_effective_native_supply, get_token_balance, query_storage_value};
+use namada_sdk::rpc::{self, get_effective_native_supply, get_token_balance, query_storage_value};
 use namada_sdk::wallet::fs::FsWalletUtils;
 use namada_sdk::{Namada, NamadaImpl};
 use namada_token::{Dec, Key};
@@ -160,14 +160,14 @@ async fn main() {
             Dec::try_from(last_locked_amount.raw_amount()).unwrap(),
         );
 
-        let token = Address::from_str(token).unwrap();
+        let token_addr = Address::from_str(token).unwrap();
         let masp_address = sdk
             .wallet()
             .await
             .find_address("masp")
             .unwrap()
             .into_owned();
-        let cur_locked_amount = get_token_balance(&sdk.client, &token, &masp_address, None)
+        let cur_locked_amount = get_token_balance(&sdk.client, &token_addr, &masp_address, None)
             .await
             .unwrap();
         let control_coeff = max_reward_rate.checked_div(365_u64).unwrap();
@@ -178,12 +178,50 @@ async fn main() {
                 Dec::try_from(cur_locked_amount.raw_amount()).unwrap(),
             )
             .unwrap();
+        let inflation_rate = Dec::try_from(inflation)
+            .unwrap()
+            .checked_mul(365_u64)
+            .unwrap()
+            .checked_div(Dec::try_from(nam_supply).unwrap())
+            .unwrap()
+            .checked_div(Dec::from(1000000_u64))
+            .unwrap();
+        let cur_token_amount =
+            rpc::get_token_balance(&sdk.client, &token_addr, &masp_address, None)
+                .await
+                .unwrap();
+        let cur_nam_per_tok = Dec::try_from(inflation)
+            .unwrap()
+            .checked_div(Dec::try_from(cur_token_amount.raw_amount()).unwrap())
+            .unwrap();
+
+        let cur_eff_apy = Dec::try_from(last_inflation)
+            .unwrap()
+            .checked_mul(365_u64)
+            .unwrap()
+            .checked_mul(nam_price)
+            .unwrap()
+            .checked_div(Dec::try_from(last_locked_amount).unwrap())
+            .unwrap()
+            .checked_div(*token_prices.get(token).unwrap())
+            .unwrap();
+
         println!("------------------------------------");
         println!(
             "Using the current amount in the MASP to run the PD Controller if epoch ended now"
         );
         println!("------------------------------------");
         println!("Exp. Inflation now: {}", inflation);
+        println!("Current token amount: {}", cur_token_amount);
+        println!(
+            "Inflation rate now: {}%",
+            inflation_rate.checked_mul(Dec::from(100_u64)).unwrap()
+        );
+        println!("Current NAM per token: {}", cur_nam_per_tok);
+        println!(
+            "Current effective APY: {}%",
+            cur_eff_apy.checked_mul(Dec::from(100_u64)).unwrap()
+        );
         println!(
             "Now / last = {}",
             Dec::try_from(inflation)
