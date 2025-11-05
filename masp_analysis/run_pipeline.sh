@@ -16,6 +16,9 @@ seconds=$((duration % 60))
 
 echo ""
 echo "================================================"
-echo "Pipeline completed at $(date)"
+echo "Data processing pipeline completed at $(date)"
 echo "Total time: ${minutes}m ${seconds}s (${duration} seconds)"
+echo "Now analyzing data..."
 echo "================================================"
+
+python3 analyze.py
