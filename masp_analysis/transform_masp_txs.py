@@ -36,7 +36,7 @@ def transform_masp_txs(input_file='masp_txs.json', output_file='transformed_masp
     
     transformed_data = []
     
-    print(f"Processing {len(wrapper_txs)} wrapper transactions...")
+    print(f"Processing {len(wrapper_txs)} submitted wrapper transactions...")
     
     for wrapper_tx in wrapper_txs:
         wrapper_id = wrapper_tx.get('id')
@@ -48,6 +48,9 @@ def transform_masp_txs(input_file='masp_txs.json', output_file='transformed_masp
         inner_txs = wrapper_tx.get('innerTransactions', [])
         
         for inner_tx in inner_txs:
+            if inner_tx.get('exitCode') == "rejected":
+                continue
+            
             inner_tx_id = inner_tx.get('id')
             inner_tx_kind = inner_tx.get('kind')
             data_str = inner_tx.get('data', '{}')
@@ -100,7 +103,7 @@ def transform_masp_txs(input_file='masp_txs.json', output_file='transformed_masp
             
             transformed_data.append(entry)
     
-    print(f"Writing {len(transformed_data)} inner transactions to {output_file}...")
+    print(f"Writing {len(transformed_data)} applied inner transactions to {output_file}...")
     
     with open(output_file, 'w') as f:
         json.dump(transformed_data, f, indent=2)
