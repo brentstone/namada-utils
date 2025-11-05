@@ -33,7 +33,11 @@ def filter_masp_txs(input_file='transformed_masp_txs.json', output_file='filtere
         'total': len(transactions),
         'shielding': 0,
         'unshielding': 0,
-        'shielded_transfer_skipped': 0,
+        'shielded_transfer': 0,
+        'shielded_transfer_pure': 0,
+        'shielded_transfer_fake_unshield': 0,
+        'ibc_shielding': 0,
+        'ibc_unshielding': 0,
         'skipped': 0,
         'warnings': 0,
         'errors': 0
@@ -53,13 +57,14 @@ def filter_masp_txs(input_file='transformed_masp_txs.json', output_file='filtere
         
         # Process based on transaction kind
         if inner_tx_kind == 'shieldedTransfer':
-            stats['shielded_transfer_skipped'] += 1
+            stats['shielded_transfer'] += 1
+            stats['shielded_transfer_pure'] += 1
             continue
         
-        elif inner_tx_kind == 'shieldingTransfer':
+        elif inner_tx_kind == 'shieldingTransfer' or inner_tx_kind == 'ibcShieldingTransfer' or inner_tx_kind == 'ibcUnshieldingTransfer':
             # Validate structure
             if len(sources) != 1 or len(targets) != 1:
-                print(f"WARNING: Unconventional shielding tx with {len(sources)} sources "
+                print(f"WARNING: Unconventional {inner_tx_kind} with {len(sources)} sources "
                       f"and {len(targets)} targets. Inner tx ID: {inner_tx_id}")
                 stats['warnings'] += 1
                 stats['skipped'] += 1
@@ -85,18 +90,25 @@ def filter_masp_txs(input_file='transformed_masp_txs.json', output_file='filtere
                 continue
             
             # Create output entry
+            if inner_tx_kind == 'shieldingTransfer':
+                tx_type = 'shielding'
+            elif inner_tx_kind == 'ibcShieldingTransfer':
+                tx_type = 'ibc_shielding'
+            else:
+                tx_type = 'ibc_unshielding'
+            
             entry = {
                 'wrapper_tx_id': wrapper_tx_id,
                 'block_height': block_height,
                 'fee_token_address': fee_token_address,
                 'inner_tx_id': inner_tx_id,
-                'tx_type': 'shielding',
+                'tx_type': tx_type,
                 'address': source.get('owner'),
                 'amount': source.get('amount'),
                 'token': source.get('token')
             }
             filtered_data.append(entry)
-            stats['shielding'] += 1
+            stats[tx_type] += 1
         
         elif inner_tx_kind == 'unshieldingTransfer':
             # Case 1: Single source and single target. Can either be a shielded transfer with MASP fee payment (skip) or a real unshielding with fee paid by currently transparent tokens.
@@ -104,10 +116,11 @@ def filter_masp_txs(input_file='transformed_masp_txs.json', output_file='filtere
                 source = sources[0]
                 target = targets[0]
                 
-                # Check if this is a fee payment tx (skip it)
+                # Check if this is a fee payment tx for an actual shielded transfer (skip it)
                 if (target.get('owner') == fee_payer and 
                     source.get('amount') == target.get('amount')):
-                    stats['skipped'] += 1
+                    stats['shielded_transfer'] += 1
+                    stats['shielded_transfer_fake_unshield'] += 1
                 # Check if this is a real unshielding with fee paid by currently transparent tokens.
                 elif (target.get('owner') != fee_payer and source.get('amount') == target.get('amount')):
                     filtered_data.append(entry)
@@ -228,11 +241,15 @@ def filter_masp_txs(input_file='transformed_masp_txs.json', output_file='filtere
     with open(output_file, 'w') as f:
         json.dump(filtered_data, f, indent=2)
     
-    print(f"\n=== Filtering Complete ===")
-    print(f"Total transactions processed: {stats['total']}")
-    print(f"Shielding transactions: {stats['shielding']}")
-    print(f"Unshielding transactions: {stats['unshielding']}")
-    print(f"Shielded transfers (skipped): {stats['shielded_transfer_skipped']}")
+    print(f"\n=== Filtering Complete ===\n")
+    print(f"Total MASPtransactions processed: {stats['total']}")
+    print(f"Native shielding transactions: {stats['shielding']}")
+    print(f"Native unshielding transactions: {stats['unshielding']}")
+    print(f"Shielded transfers (total): {stats['shielded_transfer']}")
+    print(f"Shielded transfers (transparent gas payment): {stats['shielded_transfer_pure']}")
+    print(f"Shielded transfers (shielded gas payment): {stats['shielded_transfer_fake_unshield']}")
+    print(f"IBC shielding transfers: {stats['ibc_shielding']}")
+    print(f"IBC unshielding transfers: {stats['ibc_unshielding']}")
     print(f"Other skipped transactions: {stats['skipped']}")
     print(f"Warnings: {stats['warnings']}")
     print(f"Errors: {stats['errors']}")

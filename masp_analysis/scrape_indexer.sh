@@ -23,7 +23,7 @@ while true; do
 
     # Construct the full URL
     # We assume the parameter is named 'offset'
-    url="${base_url}?offset=${offset}&size=${size}&kind=shieldedTransfer&kind=unshieldingTransfer&kind=shieldingTransfer"
+    url="${base_url}?offset=${offset}&size=${size}&kind=shieldedTransfer&kind=unshieldingTransfer&kind=shieldingTransfer&kind=ibcUnshieldingTransfer&kind=ibcShieldingTransfer"
     
     # Make the request
     # -s for silent (no progress meter)

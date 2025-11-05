@@ -59,9 +59,20 @@ def transform_masp_txs(input_file='masp_txs.json', output_file='transformed_masp
                 print(f"Warning: Could not parse data for inner tx {inner_tx_id}")
                 data = {}
             
+            # Handle both regular MASP transfers (dict) and IBC transfers (list)
+            # For IBC transfers, data is a list where the second element contains sources/targets
+            if isinstance(data, list):
+                # IBC transfer - extract IBC info from first element, sources/targets from second
+                # ibc_info = data[0].get('Ibc', {}) if len(data) > 0 else {}
+                transfer_data = data[1] if len(data) > 1 else {}
+            else:
+                # Regular MASP transfer - data is already a dict
+                # ibc_info = {}
+                transfer_data = data
+            
             # Get sources and targets, removing 'type' field from each
-            sources = data.get('sources', [])
-            targets = data.get('targets', [])
+            sources = transfer_data.get('sources', [])
+            targets = transfer_data.get('targets', [])
             
             # Remove 'type' field from sources
             filtered_sources = [
