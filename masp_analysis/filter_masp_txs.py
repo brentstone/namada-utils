@@ -242,17 +242,23 @@ def filter_masp_txs(input_file='transformed_masp_txs.json', output_file='filtere
         json.dump(filtered_data, f, indent=2)
     
     print(f"\n=== Filtering Complete ===\n")
-    print(f"Total MASPtransactions processed: {stats['total']}")
-    print(f"Native shielding transactions: {stats['shielding']}")
-    print(f"Native unshielding transactions: {stats['unshielding']}")
-    print(f"Shielded transfers (total): {stats['shielded_transfer']}")
-    print(f"Shielded transfers (transparent gas payment): {stats['shielded_transfer_pure']}")
-    print(f"Shielded transfers (shielded gas payment): {stats['shielded_transfer_fake_unshield']}")
-    print(f"IBC shielding transfers: {stats['ibc_shielding']}")
-    print(f"IBC unshielding transfers: {stats['ibc_unshielding']}")
-    print(f"Other skipped transactions: {stats['skipped']}")
-    print(f"Warnings: {stats['warnings']}")
-    print(f"Errors: {stats['errors']}")
+    
+    total = stats['total']
+    ibc_total = stats['ibc_shielding'] + stats['ibc_unshielding']
+    
+    print(f"Total MASP transactions processed: {total}")
+    print(f"Native shielding transactions: {stats['shielding']} ({100*stats['shielding']/total:.2f}%)")
+    print(f"Native unshielding transactions: {stats['unshielding']} ({100*stats['unshielding']/total:.2f}%)")
+    print(f"Shielded transfers (total): {stats['shielded_transfer']} ({100*stats['shielded_transfer']/total:.2f}%)")
+    print(f"  - Shielded transfers (transparent gas payment): {stats['shielded_transfer_pure']}")
+    print(f"  - Shielded transfers (shielded gas payment): {stats['shielded_transfer_fake_unshield']}")
+    print(f"IBC shielding transfers: {stats['ibc_shielding']} ({100*stats['ibc_shielding']/total:.2f}%)")
+    print(f"IBC unshielding transfers: {stats['ibc_unshielding']} ({100*stats['ibc_unshielding']/total:.2f}%)")
+    print(f"\nOther skipped transactions: {stats['skipped']} ({100*stats['skipped']/total:.2f}%)")
+    print(f"Warnings: {stats['warnings']} ({100*stats['warnings']/total:.2f}%)")
+    print(f"Errors: {stats['errors']} ({100*stats['errors']/total:.2f}%)")
+    print(f"\nTxs over IBC comprise {100*ibc_total/total:.2f}% of all MASP txs")
+
     print(f"\nOutput: {len(filtered_data)} transactions in {output_file}")
 
 
