@@ -90,6 +90,8 @@ async fn main() {
         let proportional_gain =
             get_masp_inflation_value::<Dec>(&sdk, token, "proportional_gain").await;
         let derivative_gain = get_masp_inflation_value::<Dec>(&sdk, token, "derivative_gain").await;
+        let reward_precision =
+            get_masp_inflation_value::<u128>(&sdk, token, "reward_precision").await;
 
         let percent_tgt = Dec::try_from(last_locked_amount)
             .unwrap()
@@ -131,6 +133,7 @@ async fn main() {
         );
         println!("P gain: {}", proportional_gain);
         println!("D gain: {}", derivative_gain);
+        println!("Reward precision: {}", reward_precision);
         println!("------------------------------------");
         println!("Using the last inflation amount to compute");
         println!("------------------------------------");
